@@ -1,9 +1,9 @@
-import { CLOUD_LIMIT, PIPE_LIMIT } from "../constants";
+import { CLOUD_LIMIT, PIPE_LIMIT, SCREENS } from "../constants";
 import Cloud from "../entities/cloud";
 import Pipe from "../entities/pipe";
 import { canvas, context } from "../utils/canvas";
-import { gameData } from "../utils/game";
-import { getRandomIntegerBetween } from "../utils/helper";
+import { gameData, setBestScore, isPlayerBirdDead } from "../utils/game";
+import { getRandomInteger } from "../utils/helper";
 
 const drawBackground = () => {
   context.fillStyle = "#3cbcfc";
@@ -35,7 +35,7 @@ const drawPipes = () => {
     if (gameData.pipes.length > 0) {
       pipeX =
         gameData.pipes[gameData.pipes.length - 1].x +
-        getRandomIntegerBetween(100, 200);
+        getRandomInteger(100, 200);
     }
     const pipe = new Pipe(pipeX);
     gameData.pipes.push(pipe);
@@ -59,7 +59,7 @@ const drawPlayerBird = () => {
 
 const drawScoreText = () => {
   context.save();
-  context.font = "10px PressStart2P";
+  context.font = "12px PressStart2P";
   context.fillStyle = "white";
   context.fillText(`SCORE:${gameData.score}`, 10, 20);
   context.restore();
@@ -71,6 +71,14 @@ const drawGameScreen = () => {
   drawPipes();
   drawPlayerBird();
   drawScoreText();
+  // If bird has died then navigate to death screen
+  if (isPlayerBirdDead()) {
+    // If high-score is achieved then save the score
+    if (gameData.score > gameData.bestScore) {
+      setBestScore(gameData.score);
+    }
+    gameData.activeScreen = SCREENS.DEATH;
+  }
 };
 
 export default drawGameScreen;

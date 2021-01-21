@@ -1,4 +1,5 @@
 import { context, canvas } from "../utils/canvas";
+import { gameData } from "../utils/game";
 
 const drawMainScreen = () => {
   context.save();
@@ -9,9 +10,11 @@ const drawMainScreen = () => {
   context.fillText("KOOPA", 98, 150);
   context.font = "20px PressStart2P";
   context.fillText("NEURO-EVOLUTION", 98, 170);
+  context.fillStyle = "#f7dc6f";
+  context.font = "18px PressStart2P";
+  context.fillText(`MODE:${gameData.mode}`, 133, 240);
   context.font = "24px PressStart2P";
-  context.fillText("START", 190, 250);
-  context.fillText("TRAIN", 188, 300);
+  context.fillText("START", 190, 300);
   context.restore();
 };
 

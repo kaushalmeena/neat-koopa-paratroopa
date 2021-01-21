@@ -3,12 +3,12 @@ import { birdImages } from "../utils/images";
 import { GRAVITY } from "../constants";
 
 class Bird {
-  constructor(color) {
-    this.x = 50;
-    this.y = 50;
-    this.dy = 0;
+  constructor(x, y, dy, color, type) {
+    this.x = x || 50;
+    this.y = y || 50;
+    this.dy = dy || 0;
     this.color = color || "green";
-    this.type = "lower-flap";
+    this.type = type || "lower-flap";
   }
 
   draw() {
@@ -31,7 +31,10 @@ class Bird {
 
   update() {
     this.dy += GRAVITY;
-    this.y += this.dy;
+    // Prevent bird going offscreen by flapping
+    if (this.y + this.dy > 0) {
+      this.y += this.dy;
+    }
   }
 }
 
