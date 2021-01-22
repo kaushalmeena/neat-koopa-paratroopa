@@ -3,29 +3,23 @@ import { birdImages } from "../utils/images";
 import { GRAVITY } from "../constants";
 
 class Bird {
-  constructor(x, y, dy, color, type) {
+  constructor({ x, y, dy, type, wing } = {}) {
     this.x = x || 50;
     this.y = y || 50;
     this.dy = dy || 0;
-    this.color = color || "green";
-    this.type = type || "lower-flap";
+    this.type = type || "green";
+    this.wing = wing || "lower-wing";
   }
 
   draw() {
-    context.drawImage(
-      birdImages[this.color][this.type],
-      this.x,
-      this.y,
-      28,
-      42
-    );
+    context.drawImage(birdImages[this.type][this.wing], this.x, this.y, 28, 42);
   }
 
   flap() {
     this.dy = -5;
-    this.type = "upper-flap";
+    this.wing = "upper-wing";
     setTimeout(() => {
-      this.type = "lower-flap";
+      this.wing = "lower-wing";
     }, 80);
   }
 

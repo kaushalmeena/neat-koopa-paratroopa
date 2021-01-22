@@ -31,9 +31,9 @@ const redKoopaImage2 = new Image();
 redKoopaImage2.src = redKoopa2;
 
 const cloudImages = {
-  "1": cloudImage1,
-  "2": cloudImage2,
-  "3": cloudImage3
+  "cloud-1": cloudImage1,
+  "cloud-2": cloudImage2,
+  "cloud-3": cloudImage3
 };
 
 const pipeImages = {
@@ -43,12 +43,12 @@ const pipeImages = {
 
 const birdImages = {
   green: {
-    "upper-flap": greenKoopaImage1,
-    "lower-flap": greenKoopaImage2
+    "upper-wing": greenKoopaImage1,
+    "lower-wing": greenKoopaImage2
   },
   red: {
-    "upper-flap": redKoopaImage1,
-    "lower-flap": redKoopaImage2
+    "upper-wing": redKoopaImage1,
+    "lower-wing": redKoopaImage2
   }
 };
 

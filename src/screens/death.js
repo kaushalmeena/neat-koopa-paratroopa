@@ -1,23 +1,22 @@
 import { context, canvas } from "../utils/canvas";
-import { gameData } from "../utils/game";
+import { gameState } from "../utils/game";
 
 const drawDeathScreen = () => {
-  context.save();
+  context.textBaseline = "top";
   context.fillStyle = "#3196ca";
   context.fillRect(0, 0, canvas.width, canvas.height);
   context.fillStyle = "white";
   context.font = "44px PressStart2P";
-  context.fillText("GAME OVER", 52, 150);
+  context.fillText("GAME OVER", 52, 100);
   context.font = "16px PressStart2P";
-  context.fillText("YOUR SCORE", 58, 200);
-  context.fillText(gameData.score, 58, 220);
-  context.fillText("BEST SCORE", 280, 200);
-  context.fillText(gameData.bestScore, 280, 220);
+  context.fillText("YOUR SCORE", 58, 170);
+  context.fillText(gameState.score, 58, 190);
+  context.fillText("BEST SCORE", 280, 170);
+  context.fillText(gameState.bestScore, 280, 190);
   context.fillStyle = "#f7dc6f";
   context.font = "24px PressStart2P";
-  context.fillText("RESTART", 166, 280);
-  context.fillText("QUIT", 202, 320);
-  context.restore();
+  context.fillText("RESTART", 166, 250);
+  context.fillText("QUIT", 202, 290);
 };
 
 export default drawDeathScreen;

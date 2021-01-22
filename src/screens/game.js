@@ -2,7 +2,7 @@ import { CLOUD_LIMIT, PIPE_LIMIT, SCREENS } from "../constants";
 import Cloud from "../entities/cloud";
 import Pipe from "../entities/pipe";
 import { canvas, context } from "../utils/canvas";
-import { gameData, setBestScore, isPlayerBirdDead } from "../utils/game";
+import { gameState, setBestScore, isPlayerBirdDead } from "../utils/game";
 import { getRandomInteger } from "../utils/helper";
 
 const drawBackground = () => {
@@ -12,57 +12,55 @@ const drawBackground = () => {
 
 const drawClouds = () => {
   // Add new cloud if limit is not reached
-  if (gameData.clouds.length < CLOUD_LIMIT) {
+  if (gameState.clouds.length < CLOUD_LIMIT) {
     const cloud = new Cloud();
-    gameData.clouds.push(cloud);
+    gameState.clouds.push(cloud);
   }
-  for (let i = 0; i < gameData.clouds.length; i++) {
+  for (let i = 0; i < gameState.clouds.length; i++) {
     // Draw and update x postion of clouds
-    gameData.clouds[i].draw();
-    gameData.clouds[i].update();
+    gameState.clouds[i].draw();
+    gameState.clouds[i].update();
     // Remove cloud if it is not visible
-    if (gameData.clouds[i].x < -50) {
-      gameData.clouds.splice(i, 1);
+    if (gameState.clouds[i].x < -50) {
+      gameState.clouds.splice(i, 1);
     }
   }
 };
 
 const drawPipes = () => {
   // Add new pipe if limit is not reached
-  if (gameData.pipes.length < PIPE_LIMIT) {
+  if (gameState.pipes.length < PIPE_LIMIT) {
     let pipeX = undefined;
     // In order to maintain some distance between pipes
-    if (gameData.pipes.length > 0) {
+    if (gameState.pipes.length > 0) {
       pipeX =
-        gameData.pipes[gameData.pipes.length - 1].x +
+        gameState.pipes[gameState.pipes.length - 1].x +
         getRandomInteger(100, 200);
     }
-    const pipe = new Pipe(pipeX);
-    gameData.pipes.push(pipe);
+    const pipe = new Pipe({ x: pipeX });
+    gameState.pipes.push(pipe);
   }
-  for (let i = 0; i < gameData.pipes.length; i++) {
+  for (let i = 0; i < gameState.pipes.length; i++) {
     // Draw and update x postion of pipes
-    gameData.pipes[i].draw();
-    gameData.pipes[i].update();
+    gameState.pipes[i].draw();
+    gameState.pipes[i].update();
     // Remove pipe if it is not visible
-    if (gameData.pipes[i].x < -50) {
-      gameData.score += 1;
-      gameData.pipes.splice(i, 1);
+    if (gameState.pipes[i].x < -50) {
+      gameState.score += 1;
+      gameState.pipes.splice(i, 1);
     }
   }
 };
 
 const drawPlayerBird = () => {
-  gameData.playerBird.draw();
-  gameData.playerBird.update();
+  gameState.playerBird.draw();
+  gameState.playerBird.update();
 };
 
 const drawScoreText = () => {
-  context.save();
-  context.font = "12px PressStart2P";
+  context.font = "14px PressStart2P";
   context.fillStyle = "white";
-  context.fillText(`SCORE:${gameData.score}`, 10, 20);
-  context.restore();
+  context.fillText(`SCORE:${gameState.score}`, 10, 10);
 };
 
 const drawGameScreen = () => {
@@ -73,11 +71,11 @@ const drawGameScreen = () => {
   drawScoreText();
   // If bird has died then navigate to death screen
   if (isPlayerBirdDead()) {
+    gameState.activeScreen = SCREENS.DEATH;
     // If high-score is achieved then save the score
-    if (gameData.score > gameData.bestScore) {
-      setBestScore(gameData.score);
+    if (gameState.score > gameState.bestScore) {
+      setBestScore(gameState.score);
     }
-    gameData.activeScreen = SCREENS.DEATH;
   }
 };
 

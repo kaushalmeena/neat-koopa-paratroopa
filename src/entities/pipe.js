@@ -4,7 +4,7 @@ import { getRandomInteger } from "../utils/helper";
 import { pipeImages } from "../utils/images";
 
 class Pipe {
-  constructor(x, y, type) {
+  constructor({ x, y, type } = {}) {
     if (type) {
       this.type = type;
     } else {
