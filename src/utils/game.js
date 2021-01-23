@@ -1,12 +1,15 @@
 import { ACTIONS, MODES, SCREENS } from "../constants";
 import Bird from "../entities/bird";
+import Serialize from "../lib/serializer";
 import { isRectangleOverlapping } from "./helper";
+
+export const serialize = new Serialize().addClass(Bird);
 
 export const getBestScore = () => {
   return localStorage.getItem("bestScore") || 0;
 };
 
-export const gameState = {
+export let gameState = {
   score: 0,
   mode: MODES.STANDARD,
   activeScreen: SCREENS.MAIN,
@@ -32,12 +35,20 @@ export const resetGameState = () => {
 };
 
 export const saveGameState = () => {
-
-}
+  const stringifiedState = serialize.stringify(gameState);
+  localStorage.setItem("gameState", stringifiedState);
+  alert("Game state successfully saved!");
+};
 
 export const loadGameState = () => {
-
-}
+  const stringifiedState = localStorage.getItem("gameState");
+  if (stringifiedState) {
+    gameState = serialize.parse(stringifiedState);
+    alert("Game state successfully loaded!");
+  } else {
+    alert("Game state was not found!");
+  }
+};
 
 export const isPlayerBirdDead = () => {
   // If bird fall down the screen
