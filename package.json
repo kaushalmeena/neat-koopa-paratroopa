@@ -2,7 +2,7 @@
   "name": "koopa-paratroopa-neuroevolution",
   "version": "1.0.0",
   "description": "A flappy bird like game, trainable using neuroevolution algorithms.",
-  "repository": "git@github.com:kaushalmeena/koopa-neuro-evolution.git",
+  "repository": "git@github.com:kaushalmeena/koopa-paratroopa-neuroevolution.git",
   "author": "Kaushal Meena <kaushal.meena1996@gmail.com>",
   "license": "MIT",
   "scripts": {
