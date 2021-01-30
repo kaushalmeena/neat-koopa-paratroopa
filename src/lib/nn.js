@@ -143,6 +143,23 @@ class NeuralNetwork {
     this.biasH.map(func);
     this.biasO.map(func);
   }
+
+  // Crossover weights of two neural networks
+  static crossover(a, b) {
+    a.weightsIH.map((elem, i, j) =>
+      Math.random() > 0.5 ? elem : b.weightsIH.data[i][j]
+    );
+    a.weightsIH.map((elem, i, j) =>
+      Math.random() > 0.5 ? elem : b.weightsIH.data[i][j]
+    );
+    a.biasH.map((elem, i, j) =>
+      Math.random() > 0.5 ? elem : b.biasH.data[i][j]
+    );
+    a.biasO.map((elem, i, j) =>
+      Math.random() > 0.5 ? elem : b.biasO.data[i][j]
+    );
+    return new NeuralNetwork(a);
+  }
 }
 
 export default NeuralNetwork;

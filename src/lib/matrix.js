@@ -48,6 +48,7 @@ class Matrix {
         this.data[i][j] = func(val, i, j);
       }
     }
+    return this;
   }
 
   multiply(item) {
@@ -94,8 +95,7 @@ class Matrix {
 
   static multiply(a, b) {
     if (a.cols !== b.rows) {
-      console.log("Columns of A must match rows of B");
-      return;
+      throw Error("Columns of A must match rows of B");
     }
     return new Matrix(a.rows, b.cols).map((_, i, j) => {
       let sum = 0;
@@ -108,8 +108,7 @@ class Matrix {
 
   static add(a, b) {
     if (a.rows !== b.rows || a.cols !== b.cols) {
-      console.log("Columns and Rows of A must match Columns and Rows of B.");
-      return;
+      throw Error("Columns and Rows of A must match Columns and Rows of B.");
     }
     // Return a new Matrix a + b
     return new Matrix(a.rows, a.cols).map(
@@ -119,8 +118,7 @@ class Matrix {
 
   static subtract(a, b) {
     if (a.rows !== b.rows || a.cols !== b.cols) {
-      console.log("Columns and Rows of A must match Columns and Rows of B.");
-      return;
+      throw Error("Columns and Rows of A must match Columns and Rows of B.");
     }
     // Return a new Matrix a - b
     return new Matrix(a.rows, a.cols).map(

@@ -2,6 +2,16 @@
 export const getRandomInteger = (min, max) =>
   Math.floor(Math.random() * (max - min + 1) + min);
 
+// Returns random array item from array
+export const getRandomItem = (arr) => {
+  let randomItem;
+  if (Array.isArray(arr)) {
+    const randomIndex = getRandomInteger(0, arr.length - 1);
+    randomItem = arr[randomIndex];
+  }
+  return randomItem;
+};
+
 // Checks if point lies inside rectangle
 export const isPointInside = (pX, pY, rectX, rectY, rectW, rectH) =>
   pX > rectX && pX < rectX + rectW && pY > rectY && pY < rectY + rectH;

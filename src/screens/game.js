@@ -2,7 +2,13 @@ import { CLOUD_LIMIT, MODES, PIPE_LIMIT, SCREENS } from "../constants";
 import Cloud from "../entities/cloud";
 import Pipe from "../entities/pipe";
 import { canvas, context } from "../utils/canvas";
-import { gameState, setBestScore, isBirdDead } from "../utils/game";
+import { nextGeneration } from "../utils/ga";
+import {
+  gameState,
+  isBirdDead,
+  resetGameState,
+  setBestScore
+} from "../utils/game";
 import { getRandomInteger } from "../utils/helper";
 
 const drawBackground = () => {
@@ -70,13 +76,18 @@ const drawBirds = () => {
     gameState.liveBirds[i].draw();
     gameState.liveBirds[i].think(gameState.pipes);
     gameState.liveBirds[i].update();
-    // if (isBirdDead(gameState.playerBird)) {
-    //   gameState.activeScreen = SCREENS.DEATH;
-    //   // If high-score is achieved then save the score
-    //   if (gameState.score > gameState.bestScore) {
-    //     setBestScore(gameState.score);
-    //   }
-    // }
+
+    // If bird has died then remove that bird from liveBirds add it to deadBirds list
+    if (isBirdDead(gameState.liveBirds[i])) {
+      gameState.deadBirds.push(...gameState.liveBirds.splice(i, 1));
+    }
+
+    // When all birds are dead create new population
+    if (gameState.liveBirds.length === 0) {
+      gameState.liveBirds = nextGeneration(gameState.deadBirds);
+      gameState.deadBirds = [];
+      resetGameState();
+    }
   }
 };
 

@@ -34,7 +34,6 @@ export const resetGameState = () => {
   gameState.playerBird.dy = 0;
   gameState.clouds = [];
   gameState.pipes = [];
-  gameState.birds = [];
 };
 
 export const saveGameState = () => {

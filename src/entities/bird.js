@@ -3,7 +3,6 @@ import { birdSprites } from "../utils/sprites";
 import { BIRD_LIFT, GRAVITY } from "../constants";
 import NeuralNetwork from "../lib/nn";
 import { normalize } from "../utils/helper";
-import { mutationFunc } from "../utils/ga";
 
 class Bird {
   constructor({ x, y, dy, type, wing, brain } = {}) {
@@ -20,7 +19,6 @@ class Bird {
     // The Neural Network is the bird's "brain"
     if (brain instanceof NeuralNetwork) {
       this.brain = brain.copy();
-      this.brain.mutate(mutationFunc);
     } else {
       this.brain = new NeuralNetwork(5, 8, 2);
     }
@@ -31,9 +29,9 @@ class Bird {
     this.fitness = 0;
   }
 
-  // Create a copy of this bird with same brain
-  copy() {
-    return new Bird({ brain: this.brain });
+  // Mutate bird's brain using mutation function
+  mutate(func) {
+    this.brain.mutate(func);
   }
 
   draw() {
@@ -99,6 +97,13 @@ class Bird {
     }
     // Every frame it is alive increases the score
     this.score += 1;
+  }
+
+  static crossover(a, b) {
+    return new Bird({
+      brain: NeuralNetwork.crossover(a.brain, b.brain),
+      type: a.type
+    });
   }
 }
 
