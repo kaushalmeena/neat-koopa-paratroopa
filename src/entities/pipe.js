@@ -1,7 +1,7 @@
 import { canvas, context } from "../utils/canvas";
 import { PIPE_SPEED } from "../constants";
 import { getRandomInteger } from "../utils/helper";
-import { pipeImages } from "../utils/images";
+import { pipeSprites } from "../utils/sprites";
 
 class Pipe {
   constructor({ x, y, type } = {}) {
@@ -26,7 +26,7 @@ class Pipe {
   }
 
   draw() {
-    context.drawImage(pipeImages[this.type], this.x, this.y);
+    context.drawImage(pipeSprites[this.type], this.x, this.y);
   }
 
   update() {

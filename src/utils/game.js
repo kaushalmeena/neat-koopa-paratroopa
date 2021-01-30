@@ -1,9 +1,8 @@
 import { ACTIONS, MODES, SCREENS } from "../constants";
 import Bird from "../entities/bird";
 import Serialize from "../lib/serializer";
+import { initialGeneration } from "./ga";
 import { isRectangleOverlapping } from "./helper";
-
-export const serialize = new Serialize().addClass(Bird);
 
 export const getBestScore = () => {
   return localStorage.getItem("bestScore") || 0;
@@ -15,9 +14,13 @@ export let gameState = {
   activeScreen: SCREENS.MAIN,
   bestScore: getBestScore(),
   playerBird: new Bird(),
+  liveBirds: initialGeneration(),
+  deadBirds: [],
   clouds: [],
   pipes: []
 };
+
+export const serialize = new Serialize().addClass(Bird);
 
 export const setBestScore = (score) => {
   gameState.bestScore = score;
@@ -26,12 +29,12 @@ export const setBestScore = (score) => {
 
 export const resetGameState = () => {
   gameState.score = 0;
-  gameState.mode = MODES.STANDARD;
   gameState.playerBird.x = 50;
   gameState.playerBird.y = 50;
   gameState.playerBird.dy = 0;
   gameState.clouds = [];
   gameState.pipes = [];
+  gameState.birds = [];
 };
 
 export const saveGameState = () => {
@@ -50,17 +53,17 @@ export const loadGameState = () => {
   }
 };
 
-export const isPlayerBirdDead = () => {
+export const isBirdDead = (bird) => {
   // If bird fall down the screen
-  if (gameState.playerBird.y > 410) {
+  if (bird.y > 410) {
     return true;
   }
   // Check if bird has collided with pipes
   for (let i = 0; i < gameState.pipes.length; i++) {
     if (
       isRectangleOverlapping(
-        gameState.playerBird.x + 4,
-        gameState.playerBird.y + 4,
+        bird.x + 4,
+        bird.y + 4,
         24,
         38,
         gameState.pipes[i].x,

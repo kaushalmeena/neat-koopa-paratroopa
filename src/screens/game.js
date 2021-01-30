@@ -1,8 +1,8 @@
-import { CLOUD_LIMIT, PIPE_LIMIT, SCREENS } from "../constants";
+import { CLOUD_LIMIT, MODES, PIPE_LIMIT, SCREENS } from "../constants";
 import Cloud from "../entities/cloud";
 import Pipe from "../entities/pipe";
 import { canvas, context } from "../utils/canvas";
-import { gameState, setBestScore, isPlayerBirdDead } from "../utils/game";
+import { gameState, setBestScore, isBirdDead } from "../utils/game";
 import { getRandomInteger } from "../utils/helper";
 
 const drawBackground = () => {
@@ -55,6 +55,29 @@ const drawPipes = () => {
 const drawPlayerBird = () => {
   gameState.playerBird.draw();
   gameState.playerBird.update();
+  // If player bird has died then navigate to death screen
+  if (isBirdDead(gameState.playerBird)) {
+    gameState.activeScreen = SCREENS.DEATH;
+    // If high-score is achieved then save the score
+    if (gameState.score > gameState.bestScore) {
+      setBestScore(gameState.score);
+    }
+  }
+};
+
+const drawBirds = () => {
+  for (let i = 0; i < gameState.liveBirds.length; i++) {
+    gameState.liveBirds[i].draw();
+    gameState.liveBirds[i].think(gameState.pipes);
+    gameState.liveBirds[i].update();
+    // if (isBirdDead(gameState.playerBird)) {
+    //   gameState.activeScreen = SCREENS.DEATH;
+    //   // If high-score is achieved then save the score
+    //   if (gameState.score > gameState.bestScore) {
+    //     setBestScore(gameState.score);
+    //   }
+    // }
+  }
 };
 
 const drawScoreText = () => {
@@ -67,15 +90,11 @@ const drawGameScreen = () => {
   drawBackground();
   drawClouds();
   drawPipes();
-  drawPlayerBird();
   drawScoreText();
-  // If bird has died then navigate to death screen
-  if (isPlayerBirdDead()) {
-    gameState.activeScreen = SCREENS.DEATH;
-    // If high-score is achieved then save the score
-    if (gameState.score > gameState.bestScore) {
-      setBestScore(gameState.score);
-    }
+  if (gameState.mode === MODES.STANDARD) {
+    drawPlayerBird();
+  } else {
+    drawBirds();
   }
 };
 

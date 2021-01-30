@@ -1,7 +1,7 @@
 import { CLOUD_SPEED } from "../constants";
 import { canvas, context } from "../utils/canvas";
 import { getRandomInteger } from "../utils/helper";
-import { cloudImages } from "../utils/images";
+import { cloudSprites } from "../utils/sprites";
 
 class Cloud {
   constructor({ x, y, type } = {}) {
@@ -11,7 +11,7 @@ class Cloud {
   }
 
   draw() {
-    context.drawImage(cloudImages[this.type], this.x, this.y);
+    context.drawImage(cloudSprites[this.type], this.x, this.y);
   }
 
   update() {

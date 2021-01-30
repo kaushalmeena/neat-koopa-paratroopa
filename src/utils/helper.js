@@ -23,3 +23,19 @@ export const isRectangleOverlapping = (
     rect1Y + rect1H < rect2Y ||
     rect2Y + rect2H < rect1Y
   );
+
+export const throttle = (func, wait = 100) => {
+  let timer = null;
+  return (...args) => {
+    if (timer === null) {
+      timer = setTimeout(() => {
+        func.apply(this, args);
+        timer = null;
+      }, wait);
+    }
+  };
+};
+
+// Returns normalized value between 0 and 1
+export const normalize = (value, minValue, maxValue) =>
+  (value - minValue) / (maxValue - minValue);
