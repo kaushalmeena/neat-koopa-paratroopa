@@ -2,7 +2,7 @@ import { canvas, context } from "../utils/canvas";
 import { birdSprites } from "../utils/sprites";
 import { BIRD_LIFT, GRAVITY } from "../constants";
 import NeuralNetwork from "../lib/nn";
-import { normalize } from "../utils/helper";
+import { getRandomItem, normalize } from "../utils/helper";
 
 class Bird {
   constructor({ x, y, dy, type, wing, brain } = {}) {
@@ -23,9 +23,9 @@ class Bird {
       this.brain = new NeuralNetwork(5, 8, 2);
     }
 
-    // Score is how many frames it's been alive
-    this.score = 0;
-    // Fitness is normalized version of score
+    // Distance is how many frames it's been alive
+    this.distance = 0;
+    // Fitness is normalized version of distance
     this.fitness = 0;
   }
 
@@ -54,7 +54,7 @@ class Bird {
 
   // Think decides if bird should flap or not
   think(pipes) {
-    // First find the closest pipe
+    // Find the closest pipe
     let closestPipe = null;
     let record = Number.POSITIVE_INFINITY;
 
@@ -67,21 +67,25 @@ class Bird {
     }
 
     if (closestPipe != null) {
-      // Now create the inputs to the neural network
       const inputs = [];
-      // x position of closest pipe
+      // X position of closest pipe
       inputs[0] = normalize(closestPipe.x, this.x, canvas.width);
-      // top of closest pipe opening
-      inputs[1] = normalize(closestPipe.y, 0, canvas.height);
-      // bottom of closest pipe opening
-      inputs[2] = normalize(closestPipe.y + 272, 0, canvas.height);
-      // bird's y position
-      inputs[3] = normalize(this.y, 0, canvas.height, 0, 1);
-      // bird's y velocity
+      // Upper Y position of closest pipe
+      inputs[1] = normalize(Math.max(closestPipe.y, 0), 0, canvas.height);
+      // Lower Y position closest pipe
+      inputs[2] = normalize(
+        Math.min(closestPipe.y + 272, canvas.height),
+        0,
+        canvas.height
+      );
+      // Bird's y position
+      inputs[3] = normalize(this.y, 0, canvas.height);
+      // Bird's y velocity
       inputs[4] = normalize(this.dy, -5, 5);
 
       // Get the outputs from the network
       const action = this.brain.predict(inputs);
+
       // Decide to flap or not!
       if (action[1] > action[0]) {
         this.flap();
@@ -95,14 +99,14 @@ class Bird {
     if (this.y + this.dy > 0) {
       this.y += this.dy;
     }
-    // Every frame it is alive increases the score
-    this.score += 1;
+    // Every frame it is alive increases the distance
+    this.distance += 1;
   }
 
   static crossover(a, b) {
     return new Bird({
       brain: NeuralNetwork.crossover(a.brain, b.brain),
-      type: a.type
+      type: getRandomItem([a.type, b.type])
     });
   }
 }

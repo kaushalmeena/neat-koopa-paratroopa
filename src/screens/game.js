@@ -1,4 +1,10 @@
-import { CLOUD_LIMIT, MODES, PIPE_LIMIT, SCREENS } from "../constants";
+import {
+  BIRD_LIMIT,
+  CLOUD_LIMIT,
+  MODES,
+  PIPE_LIMIT,
+  SCREENS
+} from "../constants";
 import Cloud from "../entities/cloud";
 import Pipe from "../entities/pipe";
 import { canvas, context } from "../utils/canvas";
@@ -41,7 +47,7 @@ const drawPipes = () => {
     if (gameState.pipes.length > 0) {
       pipeX =
         gameState.pipes[gameState.pipes.length - 1].x +
-        getRandomInteger(100, 200);
+        getRandomInteger(200, 400);
     }
     const pipe = new Pipe({ x: pipeX });
     gameState.pipes.push(pipe);
@@ -84,6 +90,11 @@ const drawBirds = () => {
 
     // When all birds are dead create new population
     if (gameState.liveBirds.length === 0) {
+      gameState.generation += 1;
+      gameState.bestDistance = Math.max(
+        ...gameState.deadBirds.map((bird) => bird.distance),
+        gameState.bestDistance
+      );
       gameState.liveBirds = nextGeneration(gameState.deadBirds);
       gameState.deadBirds = [];
       resetGameState();
@@ -97,6 +108,14 @@ const drawScoreText = () => {
   context.fillText(`SCORE:${gameState.score}`, 10, 10);
 };
 
+const drawTraingText = () => {
+  context.font = "14px PressStart2P";
+  context.fillStyle = "white";
+  context.fillText(`BEST-DISTANCE:${gameState.bestDistance}`, 10, 26);
+  context.fillText(`GENERATION:${gameState.generation}`, 10, 42);
+  context.fillText(`ALIVE:${gameState.liveBirds.length}/${BIRD_LIMIT}`, 10, 58);
+};
+
 const drawGameScreen = () => {
   drawBackground();
   drawClouds();
@@ -105,6 +124,7 @@ const drawGameScreen = () => {
   if (gameState.mode === MODES.STANDARD) {
     drawPlayerBird();
   } else {
+    drawTraingText();
     drawBirds();
   }
 };

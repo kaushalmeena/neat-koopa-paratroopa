@@ -1,6 +1,6 @@
 import { canvas, context } from "../utils/canvas";
 import { PIPE_SPEED } from "../constants";
-import { getRandomInteger } from "../utils/helper";
+import { getRandomInteger, getRandomItem } from "../utils/helper";
 import { pipeSprites } from "../utils/sprites";
 
 class Pipe {
@@ -9,7 +9,7 @@ class Pipe {
       this.type = type;
     } else {
       // Randomly assign whether to use upper or lower pipe
-      this.type = Math.random() > 0.5 ? "upper-pipe" : "lower-pipe";
+      this.type = getRandomItem(["upper-pipe", "lower-pipe"]);
     }
     if (x) {
       this.x = x;
@@ -30,7 +30,7 @@ class Pipe {
   }
 
   update() {
-    this.x = this.x - PIPE_SPEED;
+    this.x -= PIPE_SPEED;
   }
 }
 

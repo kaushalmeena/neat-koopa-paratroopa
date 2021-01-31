@@ -15,7 +15,7 @@ class Cloud {
   }
 
   update() {
-    this.x = this.x - CLOUD_SPEED;
+    this.x -= CLOUD_SPEED;
   }
 }
 

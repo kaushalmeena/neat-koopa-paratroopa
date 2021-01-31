@@ -1,7 +1,11 @@
 import { ACTIONS, MODES, SCREENS } from "../constants";
 import Bird from "../entities/bird";
+import Cloud from "../entities/cloud";
+import Pipe from "../entities/pipe";
+import Matrix from "../lib/matrix";
+import NeuralNetwork from "../lib/nn";
 import Serialize from "../lib/serializer";
-import { initialGeneration } from "./ga";
+import { initialPopulation } from "./ga";
 import { isRectangleOverlapping } from "./helper";
 
 export const getBestScore = () => {
@@ -10,17 +14,24 @@ export const getBestScore = () => {
 
 export let gameState = {
   score: 0,
+  generation: 1,
+  bestScore: getBestScore(),
+  bestDistance: 0,
   mode: MODES.STANDARD,
   activeScreen: SCREENS.MAIN,
-  bestScore: getBestScore(),
   playerBird: new Bird(),
-  liveBirds: initialGeneration(),
+  liveBirds: initialPopulation(),
   deadBirds: [],
   clouds: [],
   pipes: []
 };
 
-export const serialize = new Serialize().addClass(Bird);
+export const serialize = new Serialize()
+  .addClass(Bird)
+  .addClass(Cloud)
+  .addClass(Pipe)
+  .addClass(Matrix)
+  .addClass(NeuralNetwork);
 
 export const setBestScore = (score) => {
   gameState.bestScore = score;

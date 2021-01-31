@@ -2,7 +2,7 @@ import { BIRD_LIMIT } from "../constants";
 import Bird from "../entities/bird";
 import { getRandomItem } from "./helper";
 
-export const initialGeneration = () => {
+export const initialPopulation = () => {
   const birds = [];
   for (let i = 0; i < BIRD_LIMIT; i++) {
     birds.push(new Bird({ type: "red" }));
@@ -51,18 +51,18 @@ export const generatePopulation = (birds) => {
 
 // Normalize the fitness of all birds
 export const normalizeFitness = (birds) => {
-  // Make score exponentially better?
+  // Make distance exponentially better?
   for (let i = 0; i < birds.length; i++) {
-    birds[i].score = Math.pow(birds[i].score, 2);
+    birds[i].distance = Math.pow(birds[i].distance, 2);
   }
-  // Add up all the scores
+  // Add up all the distance
   let sum = 0;
   for (let i = 0; i < birds.length; i++) {
-    sum += birds[i].score;
+    sum += birds[i].distance;
   }
   // Divide by the sum
   for (let i = 0; i < birds.length; i++) {
-    birds[i].fitness = birds[i].score / sum;
+    birds[i].fitness = birds[i].distance / sum;
   }
 };
 
