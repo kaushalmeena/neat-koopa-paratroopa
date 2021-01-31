@@ -20,7 +20,7 @@ export const tanh = new ActivationFunction(
 class NeuralNetwork {
   constructor(...args) {
     if (args[0] instanceof NeuralNetwork) {
-      let nn = args[0];
+      const nn = args[0];
       this.inputNodes = nn.inputNodes;
       this.hiddenNodes = nn.hiddenNodes;
       this.outputNodes = nn.outputNodes;
@@ -28,6 +28,15 @@ class NeuralNetwork {
       this.weightsHO = nn.weightsHO.copy();
       this.biasH = nn.biasH.copy();
       this.biasO = nn.biasO.copy();
+    } else if (args[0] instanceof Object) {
+      const nn = args[0];
+      this.inputNodes = nn.inputNodes;
+      this.hiddenNodes = nn.hiddenNodes;
+      this.outputNodes = nn.outputNodes;
+      this.weightsIH = new Matrix(nn.weightsIH);
+      this.weightsHO = new Matrix(nn.weightsHO);
+      this.biasH = new Matrix(nn.biasH);
+      this.biasO = new Matrix(nn.biasO);
     } else {
       this.inputNodes = args[0];
       this.hiddenNodes = args[1];
@@ -56,14 +65,14 @@ class NeuralNetwork {
 
   predict(arr) {
     // Generating the Hidden Outputs
-    let inputMatrix = Matrix.fromArray(arr);
-    let hiddenMatrix = Matrix.multiply(this.weightsIH, inputMatrix);
+    const inputMatrix = Matrix.fromArray(arr);
+    const hiddenMatrix = Matrix.multiply(this.weightsIH, inputMatrix);
     hiddenMatrix.add(this.biasH);
     // Perform activation function
     hiddenMatrix.map(this.activationFunction.func);
 
     // Generating the output's output!
-    let outputMatrix = Matrix.multiply(this.weightsHO, hiddenMatrix);
+    const outputMatrix = Matrix.multiply(this.weightsHO, hiddenMatrix);
     outputMatrix.add(this.biasO);
     outputMatrix.map(this.activationFunction.func);
 
@@ -73,33 +82,33 @@ class NeuralNetwork {
 
   train(inputArr, targetArr) {
     // Generating the Hidden Outputs
-    let inputMatrix = Matrix.fromArray(inputArr);
-    let hiddenMatrix = Matrix.multiply(this.weightsIH, inputMatrix);
+    const inputMatrix = Matrix.fromArray(inputArr);
+    const hiddenMatrix = Matrix.multiply(this.weightsIH, inputMatrix);
     hiddenMatrix.add(this.biasH);
     // Perform activation function
     hiddenMatrix.map(this.activationFunction.func);
 
     // Generating the output's output!
-    let outputMatrix = Matrix.multiply(this.weightsHO, hiddenMatrix);
+    const outputMatrix = Matrix.multiply(this.weightsHO, hiddenMatrix);
     outputMatrix.add(this.biasO);
     outputMatrix.map(this.activation_function.func);
 
     // Convert array to matrix object
-    let targetMatrix = Matrix.fromArray(targetArr);
+    const targetMatrix = Matrix.fromArray(targetArr);
 
     // Calculate the error
     // ERROR = TARGET - OUTPUT
-    let outputErrors = Matrix.subtract(targetMatrix, outputMatrix);
+    const outputErrors = Matrix.subtract(targetMatrix, outputMatrix);
 
     // gradient = Output * (1 - Output);
     // Calculate gradient
-    let gradients = Matrix.map(outputMatrix, this.activation_function.dfunc);
+    const gradients = Matrix.map(outputMatrix, this.activation_function.dfunc);
     gradients.multiply(outputErrors);
     gradients.multiply(this.learningRate);
 
     // Calculate deltas
-    let hiddenMatrix_T = Matrix.transpose(hiddenMatrix);
-    let weightsHO_deltas = Matrix.multiply(gradients, hiddenMatrix_T);
+    const hiddenMatrix_T = Matrix.transpose(hiddenMatrix);
+    const weightsHO_deltas = Matrix.multiply(gradients, hiddenMatrix_T);
 
     // Adjust the weights by deltas
     this.weightsHO.add(weightsHO_deltas);
@@ -107,11 +116,11 @@ class NeuralNetwork {
     this.biasO.add(gradients);
 
     // Calculate the hidden layer errors
-    let weightsHO_T = Matrix.transpose(this.weightsHO);
-    let hiddenErrors = Matrix.multiply(weightsHO_T, outputErrors);
+    const weightsHO_T = Matrix.transpose(this.weightsHO);
+    const hiddenErrors = Matrix.multiply(weightsHO_T, outputErrors);
 
     // Calculate hidden gradient
-    let hiddenGradient = Matrix.map(
+    const hiddenGradient = Matrix.map(
       hiddenMatrix,
       this.activationFunction.dfunc
     );
@@ -119,16 +128,13 @@ class NeuralNetwork {
     hiddenGradient.multiply(this.learningRate);
 
     // Calcuate input -> hidden deltas
-    let inputMatrix_T = Matrix.transpose(inputMatrix);
-    let weightsIH_deltas = Matrix.multiply(hiddenGradient, inputMatrix_T);
+    const inputMatrix_T = Matrix.transpose(inputMatrix);
+    const weightsIH_deltas = Matrix.multiply(hiddenGradient, inputMatrix_T);
 
     this.weightsIH.add(weightsIH_deltas);
+
     // Adjust the bias by its deltas (which is just the gradients)
     this.biasH.add(hiddenGradient);
-
-    // outputs.print();
-    // targets.print();
-    // error.print();
   }
 
   // Returns copy of neural network
@@ -159,6 +165,10 @@ class NeuralNetwork {
       Math.random() > 0.5 ? elem : b.biasO.data[i][j]
     );
     return new NeuralNetwork(a);
+  }
+
+  static fromJSON(json) {
+    return new NeuralNetwork(json);
   }
 }
 

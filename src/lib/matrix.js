@@ -1,6 +1,11 @@
 class Matrix {
   constructor(...args) {
-    if (Array.isArray(args[0] && Array.isArray(args[0][0]))) {
+    if (args[0] instanceof Matrix) {
+      const m = args[0].copy();
+      this.rows = m.rows;
+      this.cols = m.cols;
+      this.data = m.data;
+    } else if (args[0] instanceof Array) {
       this.rows = args[0].length;
       this.cols = args[0][0].length;
       this.data = args[0];
@@ -15,13 +20,13 @@ class Matrix {
 
   // Returns a copy of matrix
   copy() {
-    let matrix = new Matrix(this.rows, this.cols);
+    const m = new Matrix(this.rows, this.cols);
     for (let i = 0; i < this.rows; i++) {
       for (let j = 0; j < this.cols; j++) {
-        matrix.data[i][j] = this.data[i][j];
+        m.data[i][j] = this.data[i][j];
       }
     }
-    return matrix;
+    return m;
   }
 
   // Randomly sets matrix values
@@ -31,7 +36,7 @@ class Matrix {
 
   // Returns matrix data as 1D array
   toArray() {
-    let arr = [];
+    const arr = [];
     for (let i = 0; i < this.rows; i++) {
       for (let j = 0; j < this.cols; j++) {
         arr.push(this.data[i][j]);
@@ -57,11 +62,11 @@ class Matrix {
       if (this.cols != item.rows) {
         throw Error("Columns and Rows of A must match Columns and Rows of B");
       }
-      const matrix = Matrix.multiply(this, item);
+      const m = Matrix.multiply(this, item);
       // Set new dimenstions and result
-      this.rows = matrix.rows;
-      this.cols = matrix.cols;
-      this.data = matrix.data;
+      this.rows = m.rows;
+      this.cols = m.cols;
+      this.data = m.data;
     } else {
       this.map((elem) => elem * item);
     }
@@ -139,8 +144,13 @@ class Matrix {
     );
   }
 
+  // Generates matrix from 1D array
   static fromArray(arr) {
     return new Matrix(arr.length, 1).map((_, i) => arr[i]);
+  }
+
+  static fromJSON(json) {
+    return new Matrix(json.data);
   }
 }
 

@@ -2,7 +2,7 @@ export const CLOUD_LIMIT = 5;
 export const CLOUD_SPEED = 1;
 export const PIPE_LIMIT = 5;
 export const PIPE_SPEED = 2;
-export const BIRD_LIMIT = 500;
+export const BIRD_LIMIT = 50;
 export const BIRD_LIFT = -5;
 export const GRAVITY = 0.25;
 
