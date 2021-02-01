@@ -5,10 +5,11 @@ class Matrix {
       this.rows = m.rows;
       this.cols = m.cols;
       this.data = m.data;
-    } else if (args[0] instanceof Array) {
-      this.rows = args[0].length;
-      this.cols = args[0][0].length;
-      this.data = args[0];
+    } else if (args[0] instanceof Object) {
+      const m = args[0];
+      this.rows = m.rows;
+      this.cols = m.cols;
+      this.data = m.data;
     } else {
       this.rows = args[0];
       this.cols = args[1];
@@ -147,10 +148,6 @@ class Matrix {
   // Generates matrix from 1D array
   static fromArray(arr) {
     return new Matrix(arr.length, 1).map((_, i) => arr[i]);
-  }
-
-  static fromJSON(json) {
-    return new Matrix(json.data);
   }
 }
 
