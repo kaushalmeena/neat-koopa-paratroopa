@@ -102,6 +102,12 @@ const drawBirds = () => {
   }
 };
 
+const drawPauseButton = () => {
+  context.font = "14px PressStart2P";
+  context.fillStyle = "#f7dc6f";
+  context.fillText("PAUSE", 420, 10);
+};
+
 const drawScoreText = () => {
   context.font = "14px PressStart2P";
   context.fillStyle = "white";
@@ -121,6 +127,7 @@ const drawGameScreen = () => {
   drawClouds();
   drawPipes();
   drawScoreText();
+  drawPauseButton();
   if (gameState.mode === MODES.STANDARD) {
     drawPlayerBird();
   } else {

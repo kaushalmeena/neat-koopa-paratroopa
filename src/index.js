@@ -40,6 +40,9 @@ const setup = () => {
         }
         break;
       case SCREENS.GAME:
+        if (isPointInside(x, y, 420, 10, 80, 14)) {
+          return performAction(ACTIONS.PAUSE_GAME);
+        }
         performAction(ACTIONS.FLAP_WING);
         break;
       case SCREENS.DEATH:
