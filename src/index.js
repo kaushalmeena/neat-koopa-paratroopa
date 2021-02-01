@@ -40,6 +40,7 @@ const setup = () => {
         }
         break;
       case SCREENS.GAME:
+        // When 'PAUSE' is clicked
         if (isPointInside(x, y, 420, 10, 80, 14)) {
           return performAction(ACTIONS.PAUSE_GAME);
         }
