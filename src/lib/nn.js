@@ -166,10 +166,6 @@ class NeuralNetwork {
     );
     return new NeuralNetwork(a);
   }
-
-  static fromJSON(json) {
-    return new NeuralNetwork(json);
-  }
 }
 
 export default NeuralNetwork;
