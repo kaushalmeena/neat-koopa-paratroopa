@@ -2,7 +2,7 @@
 
 A flappy bird like game, that plays and learns itself using neuroevolution algorithms.
 
-Live version is deployed at [https://koopa-paratroopa-neuroevolution.netlify.app/]
+Live version is deployed at [https://koopa-paratroopa-neuroevolution.netlify.app/](https://koopa-paratroopa-neuroevolution.netlify.app/)
 
 ## Requirements
 
