@@ -6,6 +6,13 @@
 html,
 body {
   background-color: #272b30;
+  margin: 0;
+}
+
+#github {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 #canvas {
