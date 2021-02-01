@@ -2,12 +2,12 @@ import { ACTIONS, SCREENS } from "./constants";
 import drawDeathScreen from "./screens/death";
 import drawGameScreen from "./screens/game";
 import drawMainScreen from "./screens/main";
+import drawPauseScreen from "./screens/pause";
 import { canvas } from "./utils/canvas";
 import { gameState, performAction } from "./utils/game";
 import { isPointInside } from "./utils/helper";
 
 import "./index.css";
-import drawPauseScreen from "./screens/pause";
 
 const setup = () => {
   // Attach keyboard listner for spacebar key
