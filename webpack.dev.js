@@ -1,3 +1,5 @@
+const path = require("path");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
@@ -5,7 +7,8 @@ module.exports = {
   devtool: "source-map",
   entry: "./src/index.js",
   output: {
-    publicPath: ""
+    publicPath: "",
+    path: path.resolve(__dirname, 'dist'),
   },
   resolve: {
     extensions: [".js"]
@@ -37,6 +40,7 @@ module.exports = {
     port: 3000
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: "./src/index.html",
       favicon: "./src/favicon.png",
