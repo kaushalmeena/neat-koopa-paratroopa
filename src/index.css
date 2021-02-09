@@ -16,6 +16,8 @@ body {
 }
 
 #canvas {
+  max-width: 500px;
+  width: 100%;
   position: absolute;
   left: 50%;
   top: 50%;
