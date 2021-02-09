@@ -9,9 +9,9 @@ import { isPointInside } from "./utils/helper";
 
 import "./index.css";
 
-const setup = () => {
+function setup() {
   // Attach keyboard listner for spacebar key
-  document.body.onkeyup = (e) => {
+  document.body.onkeyup = function (e) {
     switch (gameState.activeScreen) {
       case SCREENS.GAME:
         if (e.code == "Space") {
@@ -24,10 +24,9 @@ const setup = () => {
     }
   };
   // Attach click listners for various screens
-  canvas.onclick = (e) => {
-    const rect = e.target.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+  canvas.onclick = function (e) {
+    const x = (e.offsetX / canvas.offsetWidth) * canvas.width;
+    const y = (e.offsetY / canvas.offsetHeight) * canvas.height;
     switch (gameState.activeScreen) {
       case SCREENS.MAIN:
         // When 'MODE' is clicked
@@ -76,9 +75,9 @@ const setup = () => {
         break;
     }
   };
-};
+}
 
-const draw = () => {
+function draw() {
   switch (gameState.activeScreen) {
     case SCREENS.MAIN:
       drawMainScreen();
@@ -94,8 +93,7 @@ const draw = () => {
       break;
   }
   requestAnimationFrame(draw);
-};
+}
 
 setup();
-
 draw();

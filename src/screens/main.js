@@ -2,7 +2,7 @@ import { MODES } from "../constants";
 import { canvas, context } from "../utils/canvas";
 import { gameState } from "../utils/game";
 
-const drawMainScreen = () => {
+function drawMainScreen() {
   context.textBaseline = "top";
   context.fillStyle = "#3196ca";
   context.fillRect(0, 0, canvas.width, canvas.height);
@@ -27,6 +27,6 @@ const drawMainScreen = () => {
   );
   context.font = "24px PressStart2P";
   context.fillText("START", 190, 300);
-};
+}
 
 export default drawMainScreen;

@@ -1,6 +1,6 @@
 import { context, canvas } from "../utils/canvas";
 
-const drawPauseScreen = () => {
+function drawPauseScreen() {
   context.textBaseline = "top";
   context.fillStyle = "#3196ca";
   context.fillRect(0, 0, canvas.width, canvas.height);
@@ -13,6 +13,6 @@ const drawPauseScreen = () => {
   context.fillText("SAVE STATE", 130, 220);
   context.fillText("LOAD STATE", 130, 260);
   context.fillText("QUIT", 202, 300);
-};
+}
 
 export default drawPauseScreen;

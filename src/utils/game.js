@@ -1,16 +1,12 @@
 import { ACTIONS, MODES, SCREENS } from "../constants";
 import Bird from "../entities/bird";
+import { initialPopulation } from "./ga";
+import { isRectangleOverlapping } from "./helper";
 import Cloud from "../entities/cloud";
 import Pipe from "../entities/pipe";
 import Matrix from "../lib/matrix";
 import NeuralNetwork from "../lib/nn";
 import Serialize from "../lib/serializer";
-import { initialPopulation } from "./ga";
-import { isRectangleOverlapping } from "./helper";
-
-export const getBestScore = () => {
-  return localStorage.getItem("bestScore") || 0;
-};
 
 export let gameState = {
   score: 0,
@@ -33,27 +29,31 @@ export const serialize = new Serialize()
   .addClass(Matrix)
   .addClass(NeuralNetwork);
 
-export const setBestScore = (score) => {
+export function getBestScore() {
+  return localStorage.getItem("bestScore") || 0;
+}
+
+export function setBestScore(score) {
   gameState.bestScore = score;
   localStorage.setItem("bestScore", score);
-};
+}
 
-export const resetGameState = () => {
+export function resetGameState() {
   gameState.score = 0;
   gameState.playerBird.x = 50;
   gameState.playerBird.y = 50;
   gameState.playerBird.dy = 0;
   gameState.clouds = [];
   gameState.pipes = [];
-};
+}
 
-export const saveGameState = () => {
+export function saveGameState() {
   const stringifiedState = serialize.stringify(gameState);
   localStorage.setItem("gameState", stringifiedState);
   alert("Game state successfully saved!");
-};
+}
 
-export const loadGameState = () => {
+export function loadGameState() {
   const stringifiedState = localStorage.getItem("gameState");
   if (stringifiedState) {
     gameState = serialize.parse(stringifiedState);
@@ -61,9 +61,9 @@ export const loadGameState = () => {
   } else {
     alert("Game state was not found!");
   }
-};
+}
 
-export const isBirdDead = (bird) => {
+export function isBirdDead(bird) {
   // If bird fall down the screen
   if (bird.y > 410) {
     return true;
@@ -86,9 +86,9 @@ export const isBirdDead = (bird) => {
     }
   }
   return false;
-};
+}
 
-export const performAction = (action) => {
+export function performAction(action) {
   switch (action) {
     case ACTIONS.START_GAME:
       gameState.activeScreen = SCREENS.GAME;
@@ -122,4 +122,4 @@ export const performAction = (action) => {
       break;
     default:
   }
-};
+}

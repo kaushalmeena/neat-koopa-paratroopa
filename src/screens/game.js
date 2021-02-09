@@ -17,12 +17,12 @@ import {
 } from "../utils/game";
 import { getRandomInteger } from "../utils/helper";
 
-const drawBackground = () => {
+function drawBackground() {
   context.fillStyle = "#3cbcfc";
   context.fillRect(0, 0, canvas.width, canvas.height);
-};
+}
 
-const drawClouds = () => {
+function drawClouds() {
   // Add new cloud if limit is not reached
   if (gameState.clouds.length < CLOUD_LIMIT) {
     const cloud = new Cloud();
@@ -37,9 +37,9 @@ const drawClouds = () => {
       gameState.clouds.splice(i, 1);
     }
   }
-};
+}
 
-const drawPipes = () => {
+function drawPipes() {
   // Add new pipe if limit is not reached
   if (gameState.pipes.length < PIPE_LIMIT) {
     let pipeX = undefined;
@@ -62,9 +62,9 @@ const drawPipes = () => {
       gameState.pipes.splice(i, 1);
     }
   }
-};
+}
 
-const drawPlayerBird = () => {
+function drawPlayerBird() {
   gameState.playerBird.draw();
   gameState.playerBird.update();
   // If player bird has died then navigate to death screen
@@ -75,9 +75,9 @@ const drawPlayerBird = () => {
       setBestScore(gameState.score);
     }
   }
-};
+}
 
-const drawBirds = () => {
+function drawBirds() {
   for (let i = 0; i < gameState.liveBirds.length; i++) {
     gameState.liveBirds[i].draw();
     gameState.liveBirds[i].think(gameState.pipes);
@@ -100,29 +100,29 @@ const drawBirds = () => {
       resetGameState();
     }
   }
-};
+}
 
-const drawPauseButton = () => {
+function drawPauseButton() {
   context.font = "14px PressStart2P";
   context.fillStyle = "#f7dc6f";
   context.fillText("PAUSE", 420, 10);
-};
+}
 
-const drawScoreText = () => {
+function drawScoreText() {
   context.font = "14px PressStart2P";
   context.fillStyle = "white";
   context.fillText(`SCORE:${gameState.score}`, 10, 10);
-};
+}
 
-const drawTraingText = () => {
+function drawTraingText() {
   context.font = "14px PressStart2P";
   context.fillStyle = "white";
   context.fillText(`BEST-DISTANCE:${gameState.bestDistance}`, 10, 26);
   context.fillText(`GENERATION:${gameState.generation}`, 10, 42);
   context.fillText(`ALIVE:${gameState.liveBirds.length}/${BIRD_LIMIT}`, 10, 58);
-};
+}
 
-const drawGameScreen = () => {
+function drawGameScreen() {
   drawBackground();
   drawClouds();
   drawPipes();
@@ -134,6 +134,6 @@ const drawGameScreen = () => {
     drawTraingText();
     drawBirds();
   }
-};
+}
 
 export default drawGameScreen;
