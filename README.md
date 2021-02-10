@@ -1,8 +1,8 @@
-# Koopa Paratroopa Neuroevolution
+# NEAT Koopa Paratroopa
 
-A flappy bird like game, that plays and learns itself using neuroevolution algorithms.
+A flappy bird like game, that plays and learns itself using NeuroEvolution of Augmenting Topologies (NEAT) algorithm.
 
-Live version is deployed at [https://koopa-paratroopa-neuroevolution.netlify.app/](https://koopa-paratroopa-neuroevolution.netlify.app/)
+Live version is deployed at [https://neat-koopa-paratroopa.netlify.app/](https://neat-koopa-paratroopa.netlify.app/)
 
 ## Requirements
 
@@ -15,11 +15,11 @@ To install and run this project you need:
 
 To set up everything in your local machine, you need to follow these steps:
 
-1. Clone this repo and then change directory to the `koopa-paratroopa-neuroevolution` folder:
+1. Clone this repo and then change directory to the `neat-koopa-paratroopa` folder:
 
 ```bash
-$ git clone https://github.com/kaushalmeena/koopa-paratroopa-neuroevolution.git
-$ cd koopa-paratroopa-neuroevolution
+$ git clone https://github.com/kaushalmeena/neat-koopa-paratroopa.git
+$ cd neat-koopa-paratroopa
 ```
 
 2. Install project dependencies using npm:
