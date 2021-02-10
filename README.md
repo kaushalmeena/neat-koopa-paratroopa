@@ -1,6 +1,6 @@
 # NEAT Koopa Paratroopa
 
-A flappy bird like game, that plays and learns itself using NeuroEvolution of Augmenting Topologies (NEAT) algorithm.
+A flappy bird like game, that plays and learns itself using NEAT (NeuroEvolution of Augmenting Topologies) algorithm.
 
 Live version is deployed at [https://neat-koopa-paratroopa.netlify.app/](https://neat-koopa-paratroopa.netlify.app/)
 

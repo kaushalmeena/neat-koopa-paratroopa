@@ -7,12 +7,12 @@ function drawMainScreen() {
   context.fillStyle = "#3196ca";
   context.fillRect(0, 0, canvas.width, canvas.height);
   context.fillStyle = "white";
+  context.font = "72px PressStart2P";
+  context.fillText("NEAT", 110, 60);
   context.font = "56px PressStart2P";
-  context.fillText("KOOPA", 110, 100);
+  context.fillText("KOOPA", 110, 128);
   context.font = "28px PressStart2P";
-  context.fillText("PARATROOPA", 110, 154);
-  context.font = "20px PressStart2P";
-  context.fillText("NEUROEVOLUTION", 110, 182);
+  context.fillText("PARATROOPA", 110, 182);
   context.fillStyle = "#f7dc6f";
   context.font = "16px PressStart2P";
   context.fillText(
