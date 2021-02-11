@@ -51,7 +51,7 @@ export function generatePopulation(birds) {
 
 // Normalize the fitness of all birds
 export function normalizeFitness(birds) {
-  // Make distance exponentially better?
+  // Make distance exponentially better
   for (let i = 0; i < birds.length; i++) {
     birds[i].distance = Math.pow(birds[i].distance, 2);
   }

@@ -68,20 +68,31 @@ class Bird {
 
     if (closestPipe != null) {
       const inputs = [];
-      // X position of closest pipe
-      inputs[0] = normalize(closestPipe.x, this.x, canvas.width);
-      // Upper Y position of closest pipe
-      inputs[1] = normalize(Math.max(closestPipe.y, 0), 0, canvas.height);
-      // Lower Y position closest pipe
+
+      // Distance in the Y axis from the bird to the top of the screen
+      inputs[0] = normalize(this.y, 0, canvas.height);
+
+      // Distance in the Y axis from the bird to the bottom of the screen
+      inputs[1] = 1 - inputs[0];
+
+      // Distance in the X axis from the bird to the next pipe
       inputs[2] = normalize(
-        Math.min(closestPipe.y + 272, canvas.height),
+        Math.max(closestPipe.x - this.x, canvas.width),
         0,
-        canvas.height
+        canvas.width
       );
-      // Bird's y position
-      inputs[3] = normalize(this.y, 0, canvas.height);
-      // Bird's y velocity
-      inputs[4] = normalize(this.dy, -5, 5);
+
+      // Distance in the Y axis from the bird to the highest point of the pipe in the top
+      inputs[3] =
+        closestPipe.type === "lower-pipe"
+          ? inputs[0]
+          : normalize(this.y - closestPipe.y + 272, 0, canvas.height);
+
+      // Distance in the Y axis form the bird to the lowest point of the pipe in the bottom
+      inputs[4] =
+        closestPipe.type === "lower-pipe"
+          ? normalize(canvas.height - this.y - closestPipe.y, 0, canvas.height)
+          : inputs[1];
 
       // Get the outputs from the network
       const action = this.brain.predict(inputs);
