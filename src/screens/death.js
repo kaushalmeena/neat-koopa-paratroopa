@@ -1,5 +1,5 @@
 import { context, canvas } from "../utils/canvas";
-import { gameState } from "../utils/game";
+import { state } from "../state";
 
 function drawDeathScreen() {
   context.textBaseline = "top";
@@ -10,9 +10,9 @@ function drawDeathScreen() {
   context.fillText("GAME OVER", 52, 100);
   context.font = "16px PressStart2P";
   context.fillText("YOUR SCORE", 58, 170);
-  context.fillText(gameState.score, 58, 190);
+  context.fillText(state.score, 58, 190);
   context.fillText("BEST SCORE", 280, 170);
-  context.fillText(gameState.bestScore, 280, 190);
+  context.fillText(state.bestScore, 280, 190);
   context.fillStyle = "#f7dc6f";
   context.font = "24px PressStart2P";
   context.fillText("RESTART", 166, 250);

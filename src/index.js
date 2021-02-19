@@ -1,19 +1,20 @@
-import { ACTIONS, SCREENS } from "./constants";
+import { ACTIONS, SCREENS } from "./constants/main";
 import drawDeathScreen from "./screens/death";
-import drawGameScreen from "./screens/game";
-import drawMainScreen from "./screens/main";
+import drawGameScreen from "./screens/main";
 import drawPauseScreen from "./screens/pause";
+import drawTitleScreen from "./screens/title";
+import { state } from "./state";
 import { canvas } from "./utils/canvas";
-import { gameState, performAction } from "./utils/game";
 import { isPointInside } from "./utils/helper";
+import { performAction } from "./utils/main";
 
 import "./index.css";
 
 function setup() {
   // Attach keyboard listner for spacebar key
   document.body.onkeyup = function (e) {
-    switch (gameState.activeScreen) {
-      case SCREENS.GAME:
+    switch (state.activeScreen) {
+      case SCREENS.MAIN:
         if (e.code == "Space") {
           return performAction(ACTIONS.FLAP_WING);
         }
@@ -27,8 +28,8 @@ function setup() {
   canvas.onclick = function (e) {
     const x = (e.offsetX / canvas.offsetWidth) * canvas.width;
     const y = (e.offsetY / canvas.offsetHeight) * canvas.height;
-    switch (gameState.activeScreen) {
-      case SCREENS.MAIN:
+    switch (state.activeScreen) {
+      case SCREENS.TITLE:
         // When 'MODE' is clicked
         if (isPointInside(x, y, 132, 230, 224, 36)) {
           return performAction(ACTIONS.TOOGLE_MODE);
@@ -38,7 +39,7 @@ function setup() {
           return performAction(ACTIONS.START_GAME);
         }
         break;
-      case SCREENS.GAME:
+      case SCREENS.MAIN:
         // When 'PAUSE' is clicked
         if (isPointInside(x, y, 420, 10, 80, 14)) {
           return performAction(ACTIONS.PAUSE_GAME);
@@ -78,11 +79,11 @@ function setup() {
 }
 
 function draw() {
-  switch (gameState.activeScreen) {
-    case SCREENS.MAIN:
-      drawMainScreen();
+  switch (state.activeScreen) {
+    case SCREENS.TITLE:
+      drawTitleScreen();
       break;
-    case SCREENS.GAME:
+    case SCREENS.MAIN:
       drawGameScreen();
       break;
     case SCREENS.PAUSE:

@@ -38,6 +38,11 @@ export function isRectangleOverlapping(
 }
 
 // Returns normalized value between 0 and 1
-export function normalize(value, minValue, maxValue) {
+export function normalizeValue(value, minValue, maxValue) {
   return (value - minValue) / (maxValue - minValue);
+}
+
+// Returns deep-copy of data
+export function createCopy(data) {
+  return JSON.parse(JSON.stringify(data));
 }
