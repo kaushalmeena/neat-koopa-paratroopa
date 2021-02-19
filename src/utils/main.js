@@ -1,6 +1,7 @@
 import { ACTIONS, MODES, SCREENS } from "../constants/main";
 import { loadState, resetState, saveState, state } from "../state";
 import { flap } from "./bird";
+import { canvas } from "./canvas";
 import { isRectangleOverlapping } from "./helper";
 
 export function getBestScore() {
@@ -14,7 +15,7 @@ export function setBestScore(score) {
 
 export function isBirdDead(bird) {
   // If bird fall down the screen
-  if (bird.y > 410) {
+  if (bird.y > canvas.height + 10) {
     return true;
   }
   // Check if bird has collided with pipes
