@@ -62,16 +62,16 @@ export function crossoverNeuralNetworks(a, b) {
     throw Error("Number of nodes in A and B must match.");
   }
   return createNeuralNetwork({
-    weightsIH: mapMatrix(a, (elem, i, j) =>
+    weightsIH: mapMatrix(a.weightsIH, (elem, i, j) =>
       getRandomItem([elem, b.weightsIH.data[i][j]])
     ),
-    weightsHO: mapMatrix(a, (elem, i, j) =>
+    weightsHO: mapMatrix(a.weightsHO, (elem, i, j) =>
       getRandomItem([elem, b.weightsHO.data[i][j]])
     ),
-    biasH: mapMatrix(a, (elem, i, j) =>
+    biasH: mapMatrix(a.biasH, (elem, i, j) =>
       getRandomItem([elem, b.biasH.data[i][j]])
     ),
-    biasO: mapMatrix(a, (elem, i, j) =>
+    biasO: mapMatrix(a.biasO, (elem, i, j) =>
       getRandomItem([elem, b.biasO.data[i][j]])
     ),
     inputNodes: a.inputNodes,

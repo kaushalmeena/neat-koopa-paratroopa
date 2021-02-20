@@ -61,7 +61,7 @@ export function drawBird(bird) {
 export function crossoverBirds(a, b) {
   return createBird({
     brain: crossoverNeuralNetworks(a.brain, b.brain),
-    type: getRandomItem([a.type, b.type])
+    color: getRandomItem([a.color, b.color])
   });
 }
 
