@@ -59,7 +59,7 @@ export function crossoverNeuralNetworks(a, b) {
     a.hiddenNodes !== b.hiddenNodes ||
     a.outputNodes !== b.outputNodes
   ) {
-    throw Error("Number of nodes in A and B must match.");
+    throw Error("Number of nodes in A and B must match");
   }
   return createNeuralNetwork({
     weightsIH: mapMatrix(a.weightsIH, (elem, i, j) =>

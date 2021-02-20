@@ -80,7 +80,7 @@ export function think(bird, pipes) {
   if (closestPipe != null) {
     const inputs = [];
     const relativeX = closestPipe.x - bird.x;
-    const relativeY = bird.y - closestPipe.y;
+    const relativeY = closestPipe.y - bird.y;
     // Distance in the Y axis from the bird to the top of the screen
     inputs[0] = normalizeValue(bird.y, 0, canvas.height);
     // Distance in the Y axis from the bird to the bottom of the screen
@@ -95,7 +95,7 @@ export function think(bird, pipes) {
     // Distance in the Y axis form the bird to the lowest point of the pipe in the bottom
     inputs[4] =
       closestPipe.type === PIPE_TYPES.LOWER
-        ? normalizeValue(canvas.height - relativeY, 0, canvas.height)
+        ? normalizeValue(relativeY, 0, canvas.height)
         : inputs[1];
     // Get the outputs from the network
     const action = predict(bird.brain, inputs);
