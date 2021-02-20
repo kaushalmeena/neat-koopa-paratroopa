@@ -80,31 +80,31 @@ export function crossoverNeuralNetworks(a, b) {
   });
 }
 
-export function predict(matrix, array) {
+export function predict(neuralNetwork, inputArray) {
   // Generating the Hidden Outputs
-  const inputMatrix = arrayToMatrix(array);
-  let hiddenMatrix = multiplyMatrix(matrix.weightsIH, inputMatrix);
-  hiddenMatrix = addMatrix(hiddenMatrix, matrix.biasH);
+  const inputMatrix = arrayToMatrix(inputArray);
+  let hiddenMatrix = multiplyMatrix(neuralNetwork.weightsIH, inputMatrix);
+  hiddenMatrix = addMatrix(hiddenMatrix, neuralNetwork.biasH);
   // Perform activation function
   hiddenMatrix = mapMatrix(hiddenMatrix, sigmoidFunc);
   // Generating the output's output!
-  let outputMatrix = multiplyMatrix(matrix.weightsHO, hiddenMatrix);
-  outputMatrix = addMatrix(outputMatrix, matrix.biasO);
+  let outputMatrix = multiplyMatrix(neuralNetwork.weightsHO, hiddenMatrix);
+  outputMatrix = addMatrix(outputMatrix, neuralNetwork.biasO);
   outputMatrix = mapMatrix(outputMatrix, sigmoidFunc);
   // Return matrix's data as 1D array
   return matrixToArray(outputMatrix);
 }
 
-export function train(matrix, inputArray, targetArray) {
+export function train(neuralNetwork, inputArray, targetArray) {
   // Generating the Hidden Outputs
   const inputMatrix = arrayToMatrix(inputArray);
-  let hiddenMatrix = multiplyMatrix(matrix.weightsIH, inputMatrix);
-  hiddenMatrix = addMatrix(hiddenMatrix, matrix.biasH);
+  let hiddenMatrix = multiplyMatrix(neuralNetwork.weightsIH, inputMatrix);
+  hiddenMatrix = addMatrix(hiddenMatrix, neuralNetwork.biasH);
   // Perform activation function
   hiddenMatrix = mapMatrix(hiddenMatrix, sigmoidFunc);
   // Generate the output's output
-  let outputMatrix = multiplyMatrix(matrix.weightsHO, hiddenMatrix);
-  outputMatrix = addMatrix(outputMatrix, matrix.biasO);
+  let outputMatrix = multiplyMatrix(neuralNetwork.weightsHO, hiddenMatrix);
+  outputMatrix = addMatrix(outputMatrix, neuralNetwork.biasO);
   outputMatrix = mapMatrix(outputMatrix, sigmoidFunc);
   // Convert array to matrix object
   const targetMatrix = arrayToMatrix(targetArray);
@@ -118,11 +118,14 @@ export function train(matrix, inputArray, targetArray) {
   const hiddenMatrix_T = transposeMatrix(hiddenMatrix);
   const weightsHO_deltas = multiplyMatrix(gradients, hiddenMatrix_T);
   // Adjust the weights by deltas
-  matrix.weightsHO = addMatrix(matrix.weightsHO, weightsHO_deltas);
+  neuralNetwork.weightsHO = addMatrix(
+    neuralNetwork.weightsHO,
+    weightsHO_deltas
+  );
   // Adjust the bias by its deltas (which is just the gradients)
-  matrix.biasO = addMatrix(matrix.biasO, gradients);
+  neuralNetwork.biasO = addMatrix(neuralNetwork.biasO, gradients);
   // Calculate the hidden layer errors
-  const weightsHO_T = transposeMatrix(matrix.weightsHO);
+  const weightsHO_T = transposeMatrix(neuralNetwork.weightsHO);
   const hiddenErrors = multiplyMatrix(weightsHO_T, outputErrors);
   // Calculate hidden gradient
   let hiddenGradient = mapMatrix(hiddenMatrix, sigmoidDerivativeFunc);
@@ -131,9 +134,9 @@ export function train(matrix, inputArray, targetArray) {
   // Calcuate input -> hidden deltas
   const inputMatrix_T = transposeMatrix(inputMatrix);
   const weightsIH_deltas = multiplyMatrix(hiddenGradient, inputMatrix_T);
-  matrix.weightsIH = addMatrix(weightsIH_deltas);
+  neuralNetwork.weightsIH = addMatrix(weightsIH_deltas);
   // Adjust the bias by its deltas (which is just the gradients)
-  matrix.biasH = addMatrix(hiddenGradient);
+  neuralNetwork.biasH = addMatrix(hiddenGradient);
 }
 
 export function sigmoidFunc(x) {
