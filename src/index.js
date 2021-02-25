@@ -1,6 +1,6 @@
 import { ACTIONS, SCREENS } from "./constants/main";
 import drawDeathScreen from "./screens/death";
-import drawGameScreen from "./screens/main";
+import drawMainScreen from "./screens/main";
 import drawPauseScreen from "./screens/pause";
 import drawTitleScreen from "./screens/title";
 import { state } from "./state";
@@ -84,7 +84,7 @@ function draw() {
       drawTitleScreen();
       break;
     case SCREENS.MAIN:
-      drawGameScreen();
+      drawMainScreen();
       break;
     case SCREENS.PAUSE:
       drawPauseScreen();

@@ -115,7 +115,7 @@ function drawTraingText() {
   context.fillText(`ALIVE:${state.liveBirds.length}/${BIRD_LIMIT}`, 10, 58);
 }
 
-function drawGameScreen() {
+function drawMainScreen() {
   drawBackground();
   drawClouds();
   drawPipes();
@@ -129,4 +129,4 @@ function drawGameScreen() {
   }
 }
 
-export default drawGameScreen;
+export default drawMainScreen;
