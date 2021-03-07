@@ -107,7 +107,7 @@ function drawScoreText() {
   context.fillText(`SCORE:${state.score}`, 10, 10);
 }
 
-function drawTraingText() {
+function drawTrainingText() {
   context.font = "14px PressStart2P";
   context.fillStyle = "white";
   context.fillText(`BEST-DISTANCE:${state.bestDistance}`, 10, 26);
@@ -124,7 +124,7 @@ function drawMainScreen() {
   if (state.mode === MODES.STANDARD) {
     drawPlayerBird();
   } else {
-    drawTraingText();
+    drawTrainingText();
     drawBirds();
   }
 }
