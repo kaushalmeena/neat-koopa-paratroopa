@@ -2,7 +2,7 @@
 
 A flappy bird like game, that plays and learns itself using NEAT (NeuroEvolution of Augmenting Topologies) algorithm.
 
-Live version is deployed at [https://neat-koopa-paratroopa.netlify.app/](https://neat-koopa-paratroopa.netlify.app/)
+Live version is deployed at [https://kaushalmeena.github.io/neat-koopa-paratroopa/](https://kaushalmeena.github.io/neat-koopa-paratroopa/)
 
 ## Requirements
 
