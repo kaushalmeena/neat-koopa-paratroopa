@@ -4,7 +4,7 @@ A flappy bird like game, that plays and learns itself using NEAT (NeuroEvolution
 
 Live version is deployed at [https://kaushalmeena.github.io/neat-koopa-paratroopa/](https://kaushalmeena.github.io/neat-koopa-paratroopa/)
 
-## Local Development
+## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development purposes.
 
