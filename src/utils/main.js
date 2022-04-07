@@ -63,7 +63,7 @@ export function performAction(action) {
     case ACTIONS.LOAD_STATE:
       loadState();
       break;
-    case ACTIONS.TOOGLE_MODE:
+    case ACTIONS.TOGGLE_MODE:
       state.mode =
         state.mode === MODES.STANDARD ? MODES.TRAINING : MODES.STANDARD;
       break;

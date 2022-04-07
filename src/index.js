@@ -11,7 +11,7 @@ import { performAction } from "./utils/main";
 import "./index.css";
 
 function setup() {
-  // Attach keyboard listner for spacebar key
+  // Attach keyboard listener for spacebar key
   document.body.onkeyup = function (e) {
     switch (state.activeScreen) {
       case SCREENS.MAIN:
@@ -24,7 +24,7 @@ function setup() {
         break;
     }
   };
-  // Attach click listners for various screens
+  // Attach click listeners for various screens
   canvas.onclick = function (e) {
     const x = (e.offsetX / canvas.offsetWidth) * canvas.width;
     const y = (e.offsetY / canvas.offsetHeight) * canvas.height;
@@ -32,7 +32,7 @@ function setup() {
       case SCREENS.TITLE:
         // When 'MODE' is clicked
         if (isPointInside(x, y, 132, 230, 224, 36)) {
-          return performAction(ACTIONS.TOOGLE_MODE);
+          return performAction(ACTIONS.TOGGLE_MODE);
         }
         // When 'START' is clicked
         if (isPointInside(x, y, 190, 300, 120, 24)) {

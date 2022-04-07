@@ -131,7 +131,7 @@ export function train(neuralNetwork, inputArray, targetArray) {
   let hiddenGradient = mapMatrix(hiddenMatrix, sigmoidDerivativeFunc);
   hiddenGradient = multiplyMatrix(hiddenGradient, hiddenErrors);
   hiddenGradient = multiplyMatrix(hiddenGradient, LEARNING_RATE);
-  // Calcuate input -> hidden deltas
+  // Calculate input -> hidden deltas
   const inputMatrix_T = transposeMatrix(inputMatrix);
   const weightsIH_deltas = multiplyMatrix(hiddenGradient, inputMatrix_T);
   neuralNetwork.weightsIH = addMatrix(weightsIH_deltas);

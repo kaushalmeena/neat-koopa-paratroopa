@@ -23,7 +23,7 @@ function drawClouds() {
     state.clouds.push(newCloud);
   }
   for (let i = 0; i < state.clouds.length; i++) {
-    // Draw and update x postion of clouds
+    // Draw and update x position of clouds
     drawCloud(state.clouds[i]);
     updateCloud(state.clouds[i]);
     // Remove cloud if it is not visible
@@ -46,7 +46,7 @@ function drawPipes() {
     state.pipes.push(newPipe);
   }
   for (let i = 0; i < state.pipes.length; i++) {
-    // Draw and update x postion of pipes
+    // Draw and update x position of pipes
     drawPipe(state.pipes[i]);
     updatePipe(state.pipes[i]);
     // Remove pipe if it is not visible

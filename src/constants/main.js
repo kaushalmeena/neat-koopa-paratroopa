@@ -18,6 +18,6 @@ export const ACTIONS = {
   QUIT_GAME: 5,
   LOAD_STATE: 6,
   SAVE_STATE: 7,
-  TOOGLE_MODE: 8,
+  TOGGLE_MODE: 8,
   FLAP_WING: 9
 };
