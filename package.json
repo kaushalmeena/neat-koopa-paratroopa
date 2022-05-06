@@ -8,6 +8,8 @@
   "scripts": {
     "start": "http-server dist -p 3000",
     "build": "webpack --config webpack.prod.js",
+    "lint:check": "eslint .",
+    "lint:fix": "eslint . --fix",
     "dev": "webpack serve --open --config webpack.dev.js",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
