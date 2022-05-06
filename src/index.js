@@ -1,12 +1,12 @@
-import { ACTIONS, SCREENS } from "./constants/main";
+import { ACTIONS, FRAME_DELAY, SCREENS } from "./constants/app";
 import drawDeathScreen from "./screens/death";
 import drawMainScreen from "./screens/main";
 import drawPauseScreen from "./screens/pause";
 import drawTitleScreen from "./screens/title";
 import { state } from "./state";
 import { canvas } from "./utils/canvas";
+import { performAction } from "./utils/app";
 import { isPointInside } from "./utils/helper";
-import { performAction } from "./utils/main";
 
 import "./index.css";
 
@@ -93,8 +93,14 @@ function draw() {
       drawDeathScreen();
       break;
   }
-  requestAnimationFrame(draw);
+}
+
+function animate() {
+  setTimeout(function () {
+    requestAnimationFrame(animate);
+    draw();
+  }, FRAME_DELAY);
 }
 
 setup();
-draw();
+animate();

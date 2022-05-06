@@ -1,3 +1,5 @@
+export const FRAME_DELAY = 10;
+
 export const MODES = {
   STANDARD: 1,
   TRAINING: 2

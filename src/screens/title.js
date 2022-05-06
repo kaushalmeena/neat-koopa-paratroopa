@@ -1,4 +1,4 @@
-import { MODES } from "../constants/main";
+import { MODES } from "../constants/app";
 import { canvas, context } from "../utils/canvas";
 import { state } from "../state";
 

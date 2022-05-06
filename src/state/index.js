@@ -1,7 +1,7 @@
-import { MODES, SCREENS } from "../constants/main";
+import { MODES, SCREENS } from "../constants/app";
 import { createBird } from "../utils/bird";
 import { createPopulation } from "../utils/ga";
-import { getBestScore } from "../utils/main";
+import { getBestScore } from "../utils/app";
 
 export let state = {
   score: 0,

@@ -1,4 +1,4 @@
-import { ACTIONS, MODES, SCREENS } from "../constants/main";
+import { ACTIONS, MODES, SCREENS } from "../constants/app";
 import { loadState, resetState, saveState, state } from "../state";
 import { flap } from "./bird";
 import { canvas } from "./canvas";

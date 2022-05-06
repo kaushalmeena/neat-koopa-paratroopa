@@ -1,6 +1,6 @@
 import { BIRD_LIMIT } from "../constants/bird";
 import { CLOUD_LIMIT } from "../constants/cloud";
-import { MODES, SCREENS } from "../constants/main";
+import { MODES, SCREENS } from "../constants/app";
 import { PIPE_LIMIT } from "../constants/pipe";
 import { resetState, state } from "../state";
 import { drawBird, think, updateBird } from "../utils/bird";
@@ -8,7 +8,7 @@ import { canvas, context } from "../utils/canvas";
 import { createCloud, drawCloud, updateCloud } from "../utils/cloud";
 import { nextGeneration } from "../utils/ga";
 import { getRandomInteger } from "../utils/helper";
-import { isBirdDead, setBestScore } from "../utils/main";
+import { isBirdDead, setBestScore } from "../utils/app";
 import { createPipe, drawPipe, updatePipe } from "../utils/pipe";
 
 function drawBackground() {
