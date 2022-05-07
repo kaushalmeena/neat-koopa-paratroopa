@@ -102,5 +102,20 @@ function animate() {
   }, FRAME_DELAY);
 }
 
-setup();
-animate();
+function start() {
+  // Wait for font to load
+  document.fonts
+    .load("44px PressStart2P")
+    .then(() => {
+      setup();
+      animate();
+    })
+    .catch(() => {
+      alert("Couldn't load font!");
+    })
+    .finally(() => {
+      document.querySelector("#loaderContainer").remove();
+    });
+}
+
+start();

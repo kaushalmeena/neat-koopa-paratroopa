@@ -1,5 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
   mode: "production",
@@ -28,7 +29,7 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"]
+        use: [MiniCssExtractPlugin.loader, "css-loader"]
       }
     ]
   },
@@ -38,6 +39,7 @@ module.exports = {
       favicon: "./src/favicon.png",
       filename: "index.html",
       inject: "body"
-    })
+    }),
+    new MiniCssExtractPlugin()
   ]
 };
