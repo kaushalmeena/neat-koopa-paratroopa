@@ -1,6 +1,6 @@
-import { canvas, context } from "../utils/canvas";
-import { getRandomInteger, getRandomItem } from "../utils/helper";
-import { pipeSprites } from "../utils/sprites";
+import { canvas, context } from "./canvas";
+import { getRandomInteger, getRandomItem } from "./helper";
+import { pipeSprites } from "./sprites";
 import { PIPE_SPEED, PIPE_TYPES } from "../constants/pipe";
 
 export function createPipe({ x, y, type } = {}) {

@@ -1,7 +1,7 @@
 import { CLOUD_SPEED, CLOUD_TYPES } from "../constants/cloud";
-import { canvas, context } from "../utils/canvas";
-import { getRandomInteger, getRandomItem } from "../utils/helper";
-import { cloudSprites } from "../utils/sprites";
+import { canvas, context } from "./canvas";
+import { getRandomInteger, getRandomItem } from "./helper";
+import { cloudSprites } from "./sprites";
 
 export function createCloud({ x, y, type } = {}) {
   const cloud = {};

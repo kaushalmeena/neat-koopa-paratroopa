@@ -2,13 +2,13 @@ import { BIRD_LIMIT } from "../constants/bird";
 import { CLOUD_LIMIT } from "../constants/cloud";
 import { MODES, SCREENS } from "../constants/app";
 import { PIPE_LIMIT } from "../constants/pipe";
-import { resetState, state } from "../state";
+import { resetState, state, setBestScore } from "../state";
 import { drawBird, think, updateBird } from "../utils/bird";
 import { canvas, context } from "../utils/canvas";
 import { createCloud, drawCloud, updateCloud } from "../utils/cloud";
 import { nextGeneration } from "../utils/ga";
 import { getRandomInteger } from "../utils/helper";
-import { isBirdDead, setBestScore } from "../utils/app";
+import { isBirdDead } from "../utils/app";
 import { createPipe, drawPipe, updatePipe } from "../utils/pipe";
 
 function drawBackground() {
@@ -18,78 +18,79 @@ function drawBackground() {
 
 function drawClouds() {
   // Add new cloud if limit is not reached
-  if (state.clouds.length < CLOUD_LIMIT) {
+  if (state.current.clouds.length < CLOUD_LIMIT) {
     const newCloud = createCloud();
-    state.clouds.push(newCloud);
+    state.current.clouds.push(newCloud);
   }
-  for (let i = 0; i < state.clouds.length; i++) {
+  for (let i = 0; i < state.current.clouds.length; i += 1) {
     // Draw and update x position of clouds
-    drawCloud(state.clouds[i]);
-    updateCloud(state.clouds[i]);
+    drawCloud(state.current.clouds[i]);
+    updateCloud(state.current.clouds[i]);
     // Remove cloud if it is not visible
-    if (state.clouds[i].x < -50) {
-      state.clouds.splice(i, 1);
+    if (state.current.clouds[i].x < -50) {
+      state.current.clouds.splice(i, 1);
     }
   }
 }
 
 function drawPipes() {
   // Add new pipe if limit is not reached
-  if (state.pipes.length < PIPE_LIMIT) {
-    let pipeX = undefined;
+  if (state.current.pipes.length < PIPE_LIMIT) {
+    let pipeX;
     // In order to maintain some distance between pipes
-    if (state.pipes.length > 0) {
+    if (state.current.pipes.length > 0) {
       pipeX =
-        state.pipes[state.pipes.length - 1].x + getRandomInteger(200, 400);
+        state.current.pipes[state.current.pipes.length - 1].x +
+        getRandomInteger(200, 400);
     }
     const newPipe = createPipe({ x: pipeX });
-    state.pipes.push(newPipe);
+    state.current.pipes.push(newPipe);
   }
-  for (let i = 0; i < state.pipes.length; i++) {
+  for (let i = 0; i < state.current.pipes.length; i += 1) {
     // Draw and update x position of pipes
-    drawPipe(state.pipes[i]);
-    updatePipe(state.pipes[i]);
+    drawPipe(state.current.pipes[i]);
+    updatePipe(state.current.pipes[i]);
     // Remove pipe if it is not visible
-    if (state.pipes[i].x < -50) {
-      state.score += 1;
-      state.pipes.splice(i, 1);
+    if (state.current.pipes[i].x < -50) {
+      state.current.score += 1;
+      state.current.pipes.splice(i, 1);
     }
   }
 }
 
 function drawPlayerBird() {
-  drawBird(state.playerBird);
-  updateBird(state.playerBird);
+  drawBird(state.current.playerBird);
+  updateBird(state.current.playerBird);
   // If player bird has died then navigate to death screen
-  if (isBirdDead(state.playerBird)) {
-    state.activeScreen = SCREENS.DEATH;
+  if (isBirdDead(state.current.playerBird)) {
+    state.current.activeScreen = SCREENS.DEATH;
     // If high-score is achieved then save the score
-    if (state.score > state.bestScore) {
-      setBestScore(state.score);
+    if (state.current.score > state.current.bestScore) {
+      setBestScore(state.current.score);
     }
   }
 }
 
 function drawBirds() {
-  for (let i = 0; i < state.liveBirds.length; i++) {
-    drawBird(state.liveBirds[i]);
-    updateBird(state.liveBirds[i]);
-    think(state.liveBirds[i], state.pipes);
+  for (let i = 0; i < state.current.liveBirds.length; i += 1) {
+    drawBird(state.current.liveBirds[i]);
+    updateBird(state.current.liveBirds[i]);
+    think(state.current.liveBirds[i], state.current.pipes);
 
     // If bird has died then remove that bird from liveBirds add it to deadBirds list
-    if (isBirdDead(state.liveBirds[i])) {
-      state.deadBirds.push(...state.liveBirds.splice(i, 1));
+    if (isBirdDead(state.current.liveBirds[i])) {
+      state.current.deadBirds.push(...state.current.liveBirds.splice(i, 1));
     }
 
     // When all birds are dead create new population
-    if (state.liveBirds.length === 0) {
-      state.generation += 1;
-      state.bestDistance = Math.max(
-        ...state.deadBirds.map((bird) => bird.distance),
-        state.bestDistance
+    if (state.current.liveBirds.length === 0) {
+      state.current.generation += 1;
+      state.current.bestDistance = Math.max(
+        ...state.current.deadBirds.map((bird) => bird.distance),
+        state.current.bestDistance
       );
-      state.liveBirds = nextGeneration(state.deadBirds);
-      state.deadBirds = [];
+      state.current.liveBirds = nextGeneration(state.current.deadBirds);
+      state.current.deadBirds = [];
       resetState();
     }
   }
@@ -104,15 +105,19 @@ function drawPauseButton() {
 function drawScoreText() {
   context.font = "14px PressStart2P";
   context.fillStyle = "white";
-  context.fillText(`SCORE:${state.score}`, 10, 10);
+  context.fillText(`SCORE:${state.current.score}`, 10, 10);
 }
 
 function drawTrainingText() {
   context.font = "14px PressStart2P";
   context.fillStyle = "white";
-  context.fillText(`BEST-DISTANCE:${state.bestDistance}`, 10, 26);
-  context.fillText(`GENERATION:${state.generation}`, 10, 42);
-  context.fillText(`ALIVE:${state.liveBirds.length}/${BIRD_LIMIT}`, 10, 58);
+  context.fillText(`BEST-DISTANCE:${state.current.bestDistance}`, 10, 26);
+  context.fillText(`GENERATION:${state.current.generation}`, 10, 42);
+  context.fillText(
+    `ALIVE:${state.current.liveBirds.length}/${BIRD_LIMIT}`,
+    10,
+    58
+  );
 }
 
 function drawMainScreen() {
@@ -121,7 +126,7 @@ function drawMainScreen() {
   drawPipes();
   drawScoreText();
   drawPauseButton();
-  if (state.mode === MODES.STANDARD) {
+  if (state.current.mode === MODES.STANDARD) {
     drawPlayerBird();
   } else {
     drawTrainingText();

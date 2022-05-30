@@ -11,6 +11,16 @@ import {
   transposeMatrix
 } from "./matrix";
 
+export const LEARNING_RATE = 0.1;
+
+export function sigmoidFunc(x) {
+  return 1 / (1 + Math.exp(-x));
+}
+
+export function sigmoidDerivativeFunc(x) {
+  return x * (1 - x);
+}
+
 export function createNeuralNetwork(...args) {
   const neuralNetwork = {};
   if (args[0] instanceof Object) {
@@ -23,9 +33,11 @@ export function createNeuralNetwork(...args) {
     neuralNetwork.biasH = nn.biasH;
     neuralNetwork.biasO = nn.biasO;
   } else {
-    neuralNetwork.inputNodes = args[0];
-    neuralNetwork.hiddenNodes = args[1];
-    neuralNetwork.outputNodes = args[2];
+    [
+      neuralNetwork.inputNodes,
+      neuralNetwork.hiddenNodes,
+      neuralNetwork.outputNodes
+    ] = args;
     neuralNetwork.weightsIH = createMatrix(
       neuralNetwork.hiddenNodes,
       neuralNetwork.inputNodes
@@ -115,36 +127,23 @@ export function train(neuralNetwork, inputArray, targetArray) {
   gradients = multiplyMatrix(gradients, outputErrors);
   gradients = multiplyMatrix(gradients, LEARNING_RATE);
   // Calculate deltas
-  const hiddenMatrix_T = transposeMatrix(hiddenMatrix);
-  const weightsHO_deltas = multiplyMatrix(gradients, hiddenMatrix_T);
+  const hiddenMatrixTranposed = transposeMatrix(hiddenMatrix);
+  const weightsHODeltas = multiplyMatrix(gradients, hiddenMatrixTranposed);
   // Adjust the weights by deltas
-  neuralNetwork.weightsHO = addMatrix(
-    neuralNetwork.weightsHO,
-    weightsHO_deltas
-  );
+  neuralNetwork.weightsHO = addMatrix(neuralNetwork.weightsHO, weightsHODeltas);
   // Adjust the bias by its deltas (which is just the gradients)
   neuralNetwork.biasO = addMatrix(neuralNetwork.biasO, gradients);
   // Calculate the hidden layer errors
-  const weightsHO_T = transposeMatrix(neuralNetwork.weightsHO);
-  const hiddenErrors = multiplyMatrix(weightsHO_T, outputErrors);
+  const weightsHOTransposed = transposeMatrix(neuralNetwork.weightsHO);
+  const hiddenErrors = multiplyMatrix(weightsHOTransposed, outputErrors);
   // Calculate hidden gradient
   let hiddenGradient = mapMatrix(hiddenMatrix, sigmoidDerivativeFunc);
   hiddenGradient = multiplyMatrix(hiddenGradient, hiddenErrors);
   hiddenGradient = multiplyMatrix(hiddenGradient, LEARNING_RATE);
   // Calculate input -> hidden deltas
-  const inputMatrix_T = transposeMatrix(inputMatrix);
-  const weightsIH_deltas = multiplyMatrix(hiddenGradient, inputMatrix_T);
-  neuralNetwork.weightsIH = addMatrix(weightsIH_deltas);
+  const inputMatrixTransposed = transposeMatrix(inputMatrix);
+  const weightsIHDeltas = multiplyMatrix(hiddenGradient, inputMatrixTransposed);
+  neuralNetwork.weightsIH = addMatrix(weightsIHDeltas);
   // Adjust the bias by its deltas (which is just the gradients)
   neuralNetwork.biasH = addMatrix(hiddenGradient);
 }
-
-export function sigmoidFunc(x) {
-  return 1 / (1 + Math.exp(-x));
-}
-
-export function sigmoidDerivativeFunc(x) {
-  return x * (1 - x);
-}
-
-export const LEARNING_RATE = 0.1;

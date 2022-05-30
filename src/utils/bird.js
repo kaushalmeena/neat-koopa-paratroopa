@@ -5,9 +5,9 @@ import {
   BIRD_WINGS
 } from "../constants/bird";
 import { PIPE_TYPES } from "../constants/pipe";
-import { canvas, context } from "../utils/canvas";
-import { createCopy, getRandomItem, normalizeValue } from "../utils/helper";
-import { birdSprites } from "../utils/sprites";
+import { canvas, context } from "./canvas";
+import { createCopy, getRandomItem, normalizeValue } from "./helper";
+import { birdSprites } from "./sprites";
 import {
   createNeuralNetwork,
   crossoverNeuralNetworks,
@@ -65,12 +65,20 @@ export function crossoverBirds(a, b) {
   });
 }
 
+export function flap(bird) {
+  bird.dy = BIRD_LIFT;
+  bird.wing = BIRD_WINGS.UPPER;
+  setTimeout(() => {
+    bird.wing = BIRD_WINGS.LOWER;
+  }, 80);
+}
+
 export function think(bird, pipes) {
   // Find the closest pipe
   let closestPipe = null;
   let minDistance = Number.POSITIVE_INFINITY;
-  for (let i = 0; i < pipes.length; i++) {
-    let diff = pipes[i].x - bird.x;
+  for (let i = 0; i < pipes.length; i += 1) {
+    const diff = pipes[i].x - bird.x;
     if (diff > 0 && diff < minDistance) {
       minDistance = diff;
       closestPipe = pipes[i];
@@ -104,12 +112,4 @@ export function think(bird, pipes) {
       flap(bird);
     }
   }
-}
-
-export function flap(bird) {
-  bird.dy = BIRD_LIFT;
-  bird.wing = BIRD_WINGS.UPPER;
-  setTimeout(() => {
-    bird.wing = BIRD_WINGS.LOWER;
-  }, 80);
 }

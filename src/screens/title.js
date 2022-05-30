@@ -16,12 +16,12 @@ function drawTitleScreen() {
   context.fillStyle = "#f7dc6f";
   context.font = "16px PressStart2P";
   context.fillText(
-    `${state.mode === MODES.STANDARD ? ">" : " "}STANDARD MODE`,
+    `${state.current.mode === MODES.STANDARD ? ">" : " "}STANDARD MODE`,
     130,
     230
   );
   context.fillText(
-    `${state.mode === MODES.TRAINING ? ">" : " "}TRAINING MODE`,
+    `${state.current.mode === MODES.TRAINING ? ">" : " "}TRAINING MODE`,
     130,
     250
   );
