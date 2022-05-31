@@ -1,19 +1,16 @@
 {
-  "parserOptions": {
-    "ecmaVersion": 2020,
-    "sourceType": "module"
-  },
   "env": {
     "browser": true
   },
   "extends": [
-    "eslint:recommended",
     "airbnb-base",
     "plugin:prettier/recommended"
   ],
+  "settings": {},
+  "plugins": [],
   "rules": {
+    "func-names": "off",
     "no-alert": "off",
-    "no-param-reassign": "off",
-    "func-names": "off"
+    "no-param-reassign": "off"
   }
 }
