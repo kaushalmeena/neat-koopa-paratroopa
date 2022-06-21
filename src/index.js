@@ -12,7 +12,7 @@ import "./index.css";
 
 function setup() {
   // Attach keyboard listener for spacebar key
-  document.body.onkeyup = function (e) {
+  document.body.onkeyup = (e) => {
     switch (state.current.activeScreen) {
       case SCREENS.MAIN:
         if (e.code === "Space") {
@@ -25,7 +25,7 @@ function setup() {
     }
   };
   // Attach click listeners for various screens
-  canvas.onclick = function (e) {
+  canvas.onclick = (e) => {
     const x = (e.offsetX / canvas.offsetWidth) * canvas.width;
     const y = (e.offsetY / canvas.offsetHeight) * canvas.height;
     switch (state.current.activeScreen) {
@@ -99,7 +99,7 @@ function draw() {
 }
 
 function animate() {
-  setTimeout(function () {
+  setTimeout(() => {
     requestAnimationFrame(animate);
     draw();
   }, FRAME_DELAY);
