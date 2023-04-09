@@ -3,6 +3,10 @@ import { getRandomInteger, getRandomItem } from "./helper";
 import { pipeSprites } from "./sprites";
 import { PIPE_SPEED, PIPE_TYPES } from "../constants/pipe";
 
+export function getFreePipeOrCreate(pipes) {
+  return pipes.find((pipe) => pipe.free);
+}
+
 export function createPipe({ x, y, type } = {}) {
   const pipe = {};
   // Type of pipe (upper or lower)
@@ -25,5 +29,16 @@ export function updatePipe(pipe) {
 }
 
 export function drawPipe(pipe) {
-  context.drawImage(pipeSprites[pipe.type], pipe.x, pipe.y);
+  const sprite = pipeSprites[pipe.type];
+  context.drawImage(
+    sprite.image,
+    sprite.sx,
+    sprite.sy,
+    sprite.sWidth,
+    sprite.sHeight,
+    pipe.x,
+    pipe.y,
+    sprite.sWidth,
+    sprite.sHeight
+  );
 }

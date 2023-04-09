@@ -20,5 +20,16 @@ export function updateCloud(cloud) {
 }
 
 export function drawCloud(cloud) {
-  context.drawImage(cloudSprites[cloud.type], cloud.x, cloud.y);
+  const sprite = cloudSprites[cloud.type];
+  context.drawImage(
+    sprite.image,
+    sprite.sx,
+    sprite.sy,
+    sprite.sWidth,
+    sprite.sHeight,
+    cloud.x,
+    cloud.y,
+    sprite.sWidth,
+    sprite.sHeight
+  );
 }

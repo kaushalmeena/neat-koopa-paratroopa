@@ -1,25 +1,25 @@
 export const FRAME_DELAY = 10;
 
 export const MODES = {
-  STANDARD: 1,
-  TRAINING: 2
+  STANDARD: "standard",
+  TRAINING: "training"
 };
 
 export const SCREENS = {
-  TITLE: 1,
-  MAIN: 2,
-  DEATH: 3,
-  PAUSE: 4
+  TITLE: "title",
+  MAIN: "main",
+  DEATH: "death",
+  PAUSE: "pause"
 };
 
 export const ACTIONS = {
-  START_GAME: 1,
-  RESTART_GAME: 2,
-  PAUSE_GAME: 3,
-  RESUME_GAME: 4,
-  QUIT_GAME: 5,
-  LOAD_STATE: 6,
-  SAVE_STATE: 7,
-  TOGGLE_MODE: 8,
-  FLAP_WING: 9
+  START_GAME: "start_game",
+  RESTART_GAME: "restart_game",
+  PAUSE_GAME: "pause_game",
+  RESUME_GAME: "resume_game",
+  QUIT_GAME: "quit_game",
+  LOAD_STATE: "load_state",
+  SAVE_STATE: "save_state",
+  TOGGLE_MODE: "toggle_mode",
+  FLAP_WING: "flap_wing"
 };

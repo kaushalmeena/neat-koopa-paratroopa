@@ -55,7 +55,18 @@ export function updateBird(bird) {
 }
 
 export function drawBird(bird) {
-  context.drawImage(birdSprites[bird.color][bird.wing], bird.x, bird.y, 28, 42);
+  const sprite = birdSprites[bird.color][bird.wing];
+  context.drawImage(
+    sprite.image,
+    sprite.sx,
+    sprite.sy,
+    sprite.sWidth,
+    sprite.sHeight,
+    bird.x,
+    bird.y,
+    sprite.sWidth,
+    sprite.sHeight
+  );
 }
 
 export function crossoverBirds(a, b) {
@@ -65,10 +76,13 @@ export function crossoverBirds(a, b) {
   });
 }
 
+let timeout;
+
 export function flap(bird) {
+  clearTimeout(timeout);
   bird.dy = BIRD_LIFT;
   bird.wing = BIRD_WINGS.UPPER;
-  setTimeout(() => {
+  timeout = setTimeout(() => {
     bird.wing = BIRD_WINGS.LOWER;
   }, 80);
 }
