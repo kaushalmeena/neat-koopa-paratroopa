@@ -1,11 +1,11 @@
-import { MODES } from "../constants/app";
-import { canvas, context } from "../utils/canvas";
+import { CANVAS_HEIGHT, CANVAS_WIDTH, MODES } from "../constants/app";
 import { state } from "../state";
+import { context } from "../utils/canvas";
 
 function drawTitleScreen() {
   context.textBaseline = "top";
   context.fillStyle = "#3196ca";
-  context.fillRect(0, 0, canvas.width, canvas.height);
+  context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   context.fillStyle = "white";
   context.font = "72px PressStart2P";
   context.fillText("NEAT", 110, 60);

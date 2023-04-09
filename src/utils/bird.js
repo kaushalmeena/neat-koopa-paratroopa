@@ -1,19 +1,28 @@
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from "../constants/app";
 import {
   BIRD_COLORS,
-  BIRD_GRAVITY,
-  BIRD_LIFT,
+  BIRD_FLAP_TIMEOUT,
+  BIRD_FALL_SPEED,
+  BIRD_HEIGHT,
+  BIRD_FLAP_LIFT,
+  BIRD_WIDTH,
   BIRD_WINGS
 } from "../constants/bird";
-import { PIPE_TYPES } from "../constants/pipe";
-import { canvas, context } from "./canvas";
-import { createCopy, getRandomItem, normalizeValue } from "./helper";
-import { birdSprites } from "./sprites";
+import { PIPE_HEIGHT, PIPE_TYPES, PIPE_WIDTH } from "../constants/pipe";
+import { context } from "./canvas";
+import {
+  createCopy,
+  getRandomItem,
+  isRectangleOverlapping,
+  normalizeValue
+} from "./helper";
 import {
   createNeuralNetwork,
   crossoverNeuralNetworks,
   mutateNeuralNetwork,
   predict
 } from "./nn";
+import { birdSprites } from "./sprites";
 
 export function createBird({ x, y, dy, color, wing, brain } = {}) {
   const bird = {};
@@ -45,7 +54,7 @@ export function mutateBird(bird, func) {
 }
 
 export function updateBird(bird) {
-  bird.dy += BIRD_GRAVITY;
+  bird.dy += BIRD_FALL_SPEED;
   // Prevent bird going offscreen by flapping
   if (bird.y + bird.dy > 0) {
     bird.y += bird.dy;
@@ -64,8 +73,8 @@ export function drawBird(bird) {
     sprite.sHeight,
     bird.x,
     bird.y,
-    sprite.sWidth,
-    sprite.sHeight
+    BIRD_WIDTH,
+    BIRD_HEIGHT
   );
 }
 
@@ -80,11 +89,11 @@ let timeout;
 
 export function flap(bird) {
   clearTimeout(timeout);
-  bird.dy = BIRD_LIFT;
+  bird.dy = BIRD_FLAP_LIFT;
   bird.wing = BIRD_WINGS.UPPER;
   timeout = setTimeout(() => {
     bird.wing = BIRD_WINGS.LOWER;
-  }, 80);
+  }, BIRD_FLAP_TIMEOUT);
 }
 
 export function think(bird, pipes) {
@@ -92,32 +101,34 @@ export function think(bird, pipes) {
   let closestPipe = null;
   let minDistance = Number.POSITIVE_INFINITY;
   for (let i = 0; i < pipes.length; i += 1) {
-    const diff = pipes[i].x - bird.x;
-    if (diff > 0 && diff < minDistance) {
-      minDistance = diff;
-      closestPipe = pipes[i];
+    // Check if pipe is active
+    if (pipes[i].active) {
+      const diff = pipes[i].x - bird.x;
+      if (diff > 0 && diff < minDistance) {
+        minDistance = diff;
+        closestPipe = pipes[i];
+      }
     }
   }
-
-  if (closestPipe != null) {
+  if (closestPipe) {
     const inputs = [];
     const relativeX = closestPipe.x - bird.x;
     const relativeY = closestPipe.y - bird.y;
     // Distance in the Y axis from the bird to the top of the screen
-    inputs[0] = normalizeValue(bird.y, 0, canvas.height);
+    inputs[0] = normalizeValue(bird.y, 0, CANVAS_HEIGHT);
     // Distance in the Y axis from the bird to the bottom of the screen
     inputs[1] = 1 - inputs[0];
     // Distance in the X axis from the bird to the next pipe
-    inputs[2] = normalizeValue(relativeX, 0, canvas.width);
+    inputs[2] = normalizeValue(relativeX, 0, CANVAS_WIDTH);
     // Distance in the Y axis from the bird to the highest point of the pipe in the top
     inputs[3] =
       closestPipe.type === PIPE_TYPES.LOWER
         ? inputs[0]
-        : normalizeValue(relativeY + 272, 0, canvas.height);
+        : normalizeValue(relativeY + PIPE_HEIGHT, 0, CANVAS_HEIGHT);
     // Distance in the Y axis form the bird to the lowest point of the pipe in the bottom
     inputs[4] =
       closestPipe.type === PIPE_TYPES.LOWER
-        ? normalizeValue(relativeY, 0, canvas.height)
+        ? normalizeValue(relativeY, 0, CANVAS_HEIGHT)
         : inputs[1];
     // Get the outputs from the network
     const action = predict(bird.brain, inputs);
@@ -126,4 +137,30 @@ export function think(bird, pipes) {
       flap(bird);
     }
   }
+}
+
+export function isBirdDead(bird, pipes) {
+  // If bird fall down the screen
+  if (bird.y > CANVAS_HEIGHT + BIRD_HEIGHT) {
+    return true;
+  }
+  // Check if bird has collided with active pipes
+  for (let i = 0; i < pipes.length; i += 1) {
+    if (
+      pipes[i].active &&
+      isRectangleOverlapping(
+        bird.x + 4,
+        bird.y + 4,
+        BIRD_WIDTH,
+        BIRD_HEIGHT,
+        pipes[i].x,
+        pipes[i].y,
+        PIPE_WIDTH,
+        PIPE_HEIGHT
+      )
+    ) {
+      return true;
+    }
+  }
+  return false;
 }

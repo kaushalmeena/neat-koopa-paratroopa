@@ -1,10 +1,11 @@
-import { context, canvas } from "../utils/canvas";
+import { CANVAS_HEIGHT, CANVAS_WIDTH } from "../constants/app";
 import { state } from "../state";
+import { context } from "../utils/canvas";
 
 function drawDeathScreen() {
   context.textBaseline = "top";
   context.fillStyle = "#3196ca";
-  context.fillRect(0, 0, canvas.width, canvas.height);
+  context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
   context.fillStyle = "white";
   context.font = "44px PressStart2P";
   context.fillText("GAME OVER", 52, 100);

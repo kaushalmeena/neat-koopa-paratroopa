@@ -1,33 +1,6 @@
 import { ACTIONS, MODES, SCREENS } from "../constants/app";
 import { loadState, resetState, saveState, state } from "../state";
 import { flap } from "./bird";
-import { canvas } from "./canvas";
-import { isRectangleOverlapping } from "./helper";
-
-export function isBirdDead(bird) {
-  // If bird fall down the screen
-  if (bird.y > canvas.height + 10) {
-    return true;
-  }
-  // Check if bird has collided with pipes
-  for (let i = 0; i < state.current.pipes.length; i += 1) {
-    if (
-      isRectangleOverlapping(
-        bird.x + 4,
-        bird.y + 4,
-        24,
-        38,
-        state.current.pipes[i].x,
-        state.current.pipes[i].y,
-        32,
-        272
-      )
-    ) {
-      return true;
-    }
-  }
-  return false;
-}
 
 export function performAction(action) {
   switch (action) {

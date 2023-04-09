@@ -1,6 +1,8 @@
 import { MODES, SCREENS } from "../constants/app";
 import { createBird } from "../utils/bird";
+import { createClouds } from "../utils/cloud";
 import { createPopulation } from "../utils/ga";
+import { createPipes, makePipeInactive } from "../utils/pipe";
 
 export function getBestScore() {
   return localStorage.getItem("bestScore") || 0;
@@ -17,8 +19,8 @@ export const state = {
     playerBird: createBird(),
     liveBirds: createPopulation(),
     deadBirds: [],
-    clouds: [],
-    pipes: []
+    clouds: createClouds(),
+    pipes: createPipes()
   }
 };
 
@@ -32,8 +34,9 @@ export function resetState() {
   state.current.playerBird.x = 50;
   state.current.playerBird.y = 50;
   state.current.playerBird.dy = 0;
-  state.current.clouds = [];
-  state.current.pipes = [];
+  for (let i = 0; i < state.current.pipes.length; i += 1) {
+    makePipeInactive(state.current.pipes[i]);
+  }
 }
 
 export function saveState() {

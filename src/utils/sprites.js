@@ -7,21 +7,21 @@ export const spritesheetImage = new Image();
 spritesheetImage.src = spritesheet;
 
 const cloudSprites = {
-  [CLOUD_TYPES.TYPE_1]: {
+  [CLOUD_TYPES.SMALL]: {
     image: spritesheetImage,
     sx: 64,
     sy: 144,
     sWidth: 32,
     sHeight: 24
   },
-  [CLOUD_TYPES.TYPE_2]: {
+  [CLOUD_TYPES.MEDIUM]: {
     image: spritesheetImage,
     sx: 64,
     sy: 120,
     sWidth: 48,
     sHeight: 24
   },
-  [CLOUD_TYPES.TYPE_3]: {
+  [CLOUD_TYPES.LARGE]: {
     image: spritesheetImage,
     sx: 64,
     sy: 0,

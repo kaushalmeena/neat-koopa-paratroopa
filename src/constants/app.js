@@ -1,5 +1,10 @@
 export const FRAME_DELAY = 10;
 
+export const CANVAS_WIDTH = 500;
+export const CANVAS_HEIGHT = 400;
+
+export const EXIT_X_POSITION = -80;
+
 export const MODES = {
   STANDARD: "standard",
   TRAINING: "training"

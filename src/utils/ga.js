@@ -1,10 +1,10 @@
-import { BIRD_COLORS, BIRD_LIMIT } from "../constants/bird";
+import { BIRD_COLORS, BIRD_CREATE_LIMIT } from "../constants/bird";
 import { createBird, crossoverBirds, mutateBird } from "./bird";
 import { getRandomItem } from "./helper";
 
 export function createPopulation() {
   const birds = [];
-  for (let i = 0; i < BIRD_LIMIT; i += 1) {
+  for (let i = 0; i < BIRD_CREATE_LIMIT; i += 1) {
     const newBird = createBird({ color: BIRD_COLORS.RED });
     birds.push(newBird);
   }
@@ -54,7 +54,7 @@ export function mutationFunc(x) {
 // Generate a new population of birds
 export function generatePopulation(birds) {
   const newBirds = [];
-  for (let i = 0; i < BIRD_LIMIT; i += 1) {
+  for (let i = 0; i < BIRD_CREATE_LIMIT; i += 1) {
     // Select random partners from pool
     const partnerA = getRandomItem(birds);
     const partnerB = getRandomItem(birds);

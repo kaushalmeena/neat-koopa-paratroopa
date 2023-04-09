@@ -1,16 +1,25 @@
-import { ACTIONS, FRAME_DELAY, SCREENS } from "./constants/app";
+import {
+  ACTIONS,
+  CANVAS_HEIGHT,
+  CANVAS_WIDTH,
+  FRAME_DELAY,
+  SCREENS
+} from "./constants/app";
 import drawDeathScreen from "./screens/death";
 import drawMainScreen from "./screens/main";
 import drawPauseScreen from "./screens/pause";
 import drawTitleScreen from "./screens/title";
 import { state } from "./state";
-import { canvas } from "./utils/canvas";
 import { performAction } from "./utils/app";
+import { canvas } from "./utils/canvas";
 import { isPointInside } from "./utils/helper";
 
 import "./index.css";
 
 function setup() {
+  // Set canvas height and width;
+  canvas.height = CANVAS_HEIGHT;
+  canvas.width = CANVAS_WIDTH;
   // Attach keyboard listener for spacebar key
   document.body.onkeyup = (e) => {
     switch (state.current.activeScreen) {
@@ -26,8 +35,8 @@ function setup() {
   };
   // Attach click listeners for various screens
   canvas.onclick = (e) => {
-    const x = (e.offsetX / canvas.offsetWidth) * canvas.width;
-    const y = (e.offsetY / canvas.offsetHeight) * canvas.height;
+    const x = (e.offsetX / canvas.offsetWidth) * CANVAS_WIDTH;
+    const y = (e.offsetY / canvas.offsetHeight) * CANVAS_HEIGHT;
     switch (state.current.activeScreen) {
       case SCREENS.TITLE:
         // When 'MODE' is clicked

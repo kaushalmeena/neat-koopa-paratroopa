@@ -1,59 +1,86 @@
-import { BIRD_LIMIT } from "../constants/bird";
-import { CLOUD_LIMIT } from "../constants/cloud";
-import { MODES, SCREENS } from "../constants/app";
-import { PIPE_LIMIT } from "../constants/pipe";
-import { resetState, state, setBestScore } from "../state";
-import { drawBird, think, updateBird } from "../utils/bird";
-import { canvas, context } from "../utils/canvas";
-import { createCloud, drawCloud, updateCloud } from "../utils/cloud";
+import {
+  CANVAS_HEIGHT,
+  CANVAS_WIDTH,
+  EXIT_X_POSITION,
+  MODES,
+  SCREENS
+} from "../constants/app";
+import { BIRD_CREATE_LIMIT } from "../constants/bird";
+import { CLOUD_ACTIVE_LIMIT } from "../constants/cloud";
+import {
+  PIPE_ACTIVE_LIMIT,
+  PIPE_MAX_DISTANCE,
+  PIPE_MIN_DISTANCE
+} from "../constants/pipe";
+import { resetState, setBestScore, state } from "../state";
+import { drawBird, isBirdDead, think, updateBird } from "../utils/bird";
+import { context } from "../utils/canvas";
+import { drawCloud, makeCloudActive, updateCloud } from "../utils/cloud";
 import { nextGeneration } from "../utils/ga";
 import { getRandomInteger } from "../utils/helper";
-import { isBirdDead } from "../utils/app";
-import { createPipe, drawPipe, updatePipe } from "../utils/pipe";
+import { drawPipe, makePipeActive, updatePipe } from "../utils/pipe";
 
 function drawBackground() {
   context.fillStyle = "#3cbcfc";
-  context.fillRect(0, 0, canvas.width, canvas.height);
+  context.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 }
 
 function drawClouds() {
-  // Add new cloud if limit is not reached
-  if (state.current.clouds.length < CLOUD_LIMIT) {
-    const newCloud = createCloud();
-    state.current.clouds.push(newCloud);
-  }
+  let activeCount = 0;
   for (let i = 0; i < state.current.clouds.length; i += 1) {
-    // Draw and update x position of clouds
-    drawCloud(state.current.clouds[i]);
-    updateCloud(state.current.clouds[i]);
-    // Remove cloud if it is not visible
-    if (state.current.clouds[i].x < -50) {
-      state.current.clouds.splice(i, 1);
+    // If cloud is active then only perform operations on it
+    if (state.current.clouds[i].active) {
+      // Increase activeCount
+      activeCount += 1;
+      // Draw and update x position of cloud
+      drawCloud(state.current.clouds[i]);
+      updateCloud(state.current.clouds[i]);
+      // Mark cloud inactive, if it is not visible
+      if (state.current.clouds[i].x < EXIT_X_POSITION) {
+        state.current.clouds[i].active = false;
+      }
+    }
+  }
+  if (activeCount < CLOUD_ACTIVE_LIMIT) {
+    // Check if any inactive cloud is avaiable
+    const cloudIndex = state.current.clouds.findIndex((cloud) => !cloud.active);
+    if (cloudIndex > -1) {
+      makeCloudActive(state.current.clouds[cloudIndex]);
     }
   }
 }
 
 function drawPipes() {
-  // Add new pipe if limit is not reached
-  if (state.current.pipes.length < PIPE_LIMIT) {
-    let pipeX;
-    // In order to maintain some distance between pipes
-    if (state.current.pipes.length > 0) {
-      pipeX =
-        state.current.pipes[state.current.pipes.length - 1].x +
-        getRandomInteger(200, 400);
-    }
-    const newPipe = createPipe({ x: pipeX });
-    state.current.pipes.push(newPipe);
-  }
+  let activeCount = 0;
+  let farthestPostitionX = 0;
   for (let i = 0; i < state.current.pipes.length; i += 1) {
-    // Draw and update x position of pipes
-    drawPipe(state.current.pipes[i]);
-    updatePipe(state.current.pipes[i]);
-    // Remove pipe if it is not visible
-    if (state.current.pipes[i].x < -50) {
-      state.current.score += 1;
-      state.current.pipes.splice(i, 1);
+    // If cloud is active then only perform operations on it
+    if (state.current.pipes[i].active) {
+      // Increase activeCount
+      activeCount += 1;
+      // Update farthestPostitionX
+      farthestPostitionX = Math.max(
+        farthestPostitionX,
+        state.current.pipes[i].x
+      );
+      // Draw and update x position of pipe
+      drawPipe(state.current.pipes[i]);
+      updatePipe(state.current.pipes[i]);
+      // Mark pipe inactive, if it is not visible
+      if (state.current.pipes[i].x < EXIT_X_POSITION) {
+        state.current.pipes[i].active = false;
+        state.current.score += 1;
+      }
+    }
+  }
+  if (activeCount < PIPE_ACTIVE_LIMIT) {
+    // Check if any inactive pipe avaiable
+    const pipeIndex = state.current.pipes.findIndex((pipe) => !pipe.active);
+    if (pipeIndex > -1) {
+      const newPostitionX =
+        farthestPostitionX +
+        getRandomInteger(PIPE_MIN_DISTANCE, PIPE_MAX_DISTANCE);
+      makePipeActive(state.current.pipes[pipeIndex], newPostitionX);
     }
   }
 }
@@ -62,7 +89,7 @@ function drawPlayerBird() {
   drawBird(state.current.playerBird);
   updateBird(state.current.playerBird);
   // If player bird has died then navigate to death screen
-  if (isBirdDead(state.current.playerBird)) {
+  if (isBirdDead(state.current.playerBird, state.current.pipes)) {
     state.current.activeScreen = SCREENS.DEATH;
     // If high-score is achieved then save the score
     if (state.current.score > state.current.bestScore) {
@@ -78,7 +105,7 @@ function drawBirds() {
     think(state.current.liveBirds[i], state.current.pipes);
 
     // If bird has died then remove that bird from liveBirds add it to deadBirds list
-    if (isBirdDead(state.current.liveBirds[i])) {
+    if (isBirdDead(state.current.liveBirds[i], state.current.pipes)) {
       state.current.deadBirds.push(...state.current.liveBirds.splice(i, 1));
     }
 
@@ -114,7 +141,7 @@ function drawTrainingText() {
   context.fillText(`BEST-DISTANCE:${state.current.bestDistance}`, 10, 26);
   context.fillText(`GENERATION:${state.current.generation}`, 10, 42);
   context.fillText(
-    `ALIVE:${state.current.liveBirds.length}/${BIRD_LIMIT}`,
+    `ALIVE:${state.current.liveBirds.length}/${BIRD_CREATE_LIMIT}`,
     10,
     58
   );
