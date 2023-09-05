@@ -127,8 +127,8 @@ export function train(neuralNetwork, inputArray, targetArray) {
   gradients = multiplyMatrix(gradients, outputErrors);
   gradients = multiplyMatrix(gradients, LEARNING_RATE);
   // Calculate deltas
-  const hiddenMatrixTranposed = transposeMatrix(hiddenMatrix);
-  const weightsHODeltas = multiplyMatrix(gradients, hiddenMatrixTranposed);
+  const hiddenMatrixTransposed = transposeMatrix(hiddenMatrix);
+  const weightsHODeltas = multiplyMatrix(gradients, hiddenMatrixTransposed);
   // Adjust the weights by deltas
   neuralNetwork.weightsHO = addMatrix(neuralNetwork.weightsHO, weightsHODeltas);
   // Adjust the bias by its deltas (which is just the gradients)

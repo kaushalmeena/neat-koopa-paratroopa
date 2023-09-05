@@ -42,7 +42,7 @@ function drawClouds() {
     }
   }
   if (activeCount < CLOUD_ACTIVE_LIMIT) {
-    // Check if any inactive cloud is avaiable
+    // Check if any inactive cloud is available
     const cloudIndex = state.current.clouds.findIndex((cloud) => !cloud.active);
     if (cloudIndex > -1) {
       makeCloudActive(state.current.clouds[cloudIndex]);
@@ -52,17 +52,14 @@ function drawClouds() {
 
 function drawPipes() {
   let activeCount = 0;
-  let farthestPostitionX = 0;
+  let farthestPositionX = 0;
   for (let i = 0; i < state.current.pipes.length; i += 1) {
     // If cloud is active then only perform operations on it
     if (state.current.pipes[i].active) {
       // Increase activeCount
       activeCount += 1;
-      // Update farthestPostitionX
-      farthestPostitionX = Math.max(
-        farthestPostitionX,
-        state.current.pipes[i].x
-      );
+      // Update farthestPositionX
+      farthestPositionX = Math.max(farthestPositionX, state.current.pipes[i].x);
       // Draw and update x position of pipe
       drawPipe(state.current.pipes[i]);
       updatePipe(state.current.pipes[i]);
@@ -74,13 +71,13 @@ function drawPipes() {
     }
   }
   if (activeCount < PIPE_ACTIVE_LIMIT) {
-    // Check if any inactive pipe avaiable
+    // Check if any inactive pipe available
     const pipeIndex = state.current.pipes.findIndex((pipe) => !pipe.active);
     if (pipeIndex > -1) {
-      const newPostitionX =
-        farthestPostitionX +
+      const newPositionX =
+        farthestPositionX +
         getRandomInteger(PIPE_MIN_DISTANCE, PIPE_MAX_DISTANCE);
-      makePipeActive(state.current.pipes[pipeIndex], newPostitionX);
+      makePipeActive(state.current.pipes[pipeIndex], newPositionX);
     }
   }
 }

@@ -45,8 +45,8 @@ export function selectPopulation(birds) {
 export function mutationFunc(x) {
   if (Math.random() < 0.1) {
     const offset = Math.random() * 0.5;
-    const newx = x + offset;
-    return newx;
+    const newX = x + offset;
+    return newX;
   }
   return x;
 }
