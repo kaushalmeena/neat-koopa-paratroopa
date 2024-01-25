@@ -14,6 +14,6 @@ export const BIRD_COLORS = {
 };
 
 export const BIRD_WINGS = {
-  UPPER: "upper",
-  LOWER: "lower"
+  UP: "up",
+  DOWN: "down"
 };

@@ -2,6 +2,7 @@ import { ACTIONS, MODES, SCREENS } from "../constants/app";
 import { loadState, resetState, saveState, state } from "../state";
 import { flap } from "./bird";
 
+// Function to perform various game actions based on the provided action type
 export function performAction(action) {
   switch (action) {
     case ACTIONS.START_GAME:

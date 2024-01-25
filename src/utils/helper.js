@@ -44,5 +44,5 @@ export function normalizeValue(value, minValue, maxValue) {
 
 // Returns deep-copy of data
 export function createCopy(data) {
-  return JSON.parse(JSON.stringify(data));
+  return structuredClone(data);
 }

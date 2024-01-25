@@ -24,16 +24,17 @@ import {
 } from "./nn";
 import { birdSprites } from "./sprites";
 
+// Function to create a bird object with specified or default properties
 export function createBird({ x, y, dy, color, wing, brain } = {}) {
   const bird = {};
-  // Color of bird
+  // Color of bird (default to green)
   bird.color = color || BIRD_COLORS.GREEN;
-  // Wing of bird
-  bird.wing = wing || BIRD_WINGS.LOWER;
-  // Coordinates of bird
+  // Wing of bird (default to down)
+  bird.wing = wing || BIRD_WINGS.DOWN;
+  // Coordinates of bird (default to (50, 50))
   bird.x = x || 50;
   bird.y = y || 50;
-  // Vertical velocity of bird
+  // Vertical velocity of bird (default to 0)
   bird.dy = dy || 0;
   // Brain of bird (contains Neural Network data)
   if (brain) {
@@ -49,10 +50,12 @@ export function createBird({ x, y, dy, color, wing, brain } = {}) {
   return bird;
 }
 
+// Function to apply mutation to a bird's brain
 export function mutateBird(bird, func) {
   mutateNeuralNetwork(bird.brain, func);
 }
 
+// Function to update the position of a bird based on its velocity
 export function updateBird(bird) {
   bird.dy += BIRD_FALL_SPEED;
   // Prevent bird going offscreen by flapping
@@ -63,6 +66,7 @@ export function updateBird(bird) {
   bird.distance += 1;
 }
 
+// Function to draw a bird on the canvas
 export function drawBird(bird) {
   const sprite = birdSprites[bird.color][bird.wing];
   context.drawImage(
@@ -78,6 +82,7 @@ export function drawBird(bird) {
   );
 }
 
+// Function to create a new bird through crossover of two parent birds
 export function crossoverBirds(a, b) {
   return createBird({
     brain: crossoverNeuralNetworks(a.brain, b.brain),
@@ -87,15 +92,17 @@ export function crossoverBirds(a, b) {
 
 let timeout;
 
+// Function to simulate the bird flapping its wings
 export function flap(bird) {
   clearTimeout(timeout);
   bird.dy = BIRD_FLAP_LIFT;
-  bird.wing = BIRD_WINGS.UPPER;
+  bird.wing = BIRD_WINGS.UP;
   timeout = setTimeout(() => {
-    bird.wing = BIRD_WINGS.LOWER;
+    bird.wing = BIRD_WINGS.DOWN;
   }, BIRD_FLAP_TIMEOUT);
 }
 
+// Function for the bird to make decisions based on the current environment (pipes)
 export function think(bird, pipes) {
   // Find the closest pipe
   let closestPipe = null;
@@ -139,6 +146,7 @@ export function think(bird, pipes) {
   }
 }
 
+// Function to check if bird is out of bounds or collided
 export function isBirdDead(bird, pipes) {
   // If bird fall down the screen
   if (bird.y > CANVAS_HEIGHT + BIRD_HEIGHT) {

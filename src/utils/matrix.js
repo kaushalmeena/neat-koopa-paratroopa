@@ -1,37 +1,42 @@
+// Function to create a matrix with specified dimensions
 export function createMatrix(...args) {
-  const matrix = {};
-  if (args[0] instanceof Object) {
-    const m = args[0];
-    matrix.rows = m.rows;
-    matrix.cols = m.cols;
-    matrix.data = m.data;
-  } else {
-    [matrix.rows, matrix.cols] = args;
-    matrix.data = new Array(matrix.rows)
-      .fill()
-      .map(() => new Array(matrix.cols).fill(0));
-  }
-  return matrix;
+  const [rows, cols, func = () => 0] = args;
+  return {
+    rows,
+    cols,
+    data: Array.from(
+      {
+        length: rows
+      },
+      (_, i) =>
+        Array.from(
+          {
+            length: cols
+          },
+          (val, j) => func(val, i, j)
+        )
+    )
+  };
 }
 
-// Apply a function to every element of matrix
-export function mapMatrix(matrix, func) {
-  for (let i = 0; i < matrix.rows; i += 1) {
-    for (let j = 0; j < matrix.cols; j += 1) {
-      const val = matrix.data[i][j];
-      matrix.data[i][j] = func(val, i, j);
-    }
-  }
-  return matrix;
+// Generates new matrix by applying function to every element of matrix
+export function mapMatrix(m, func) {
+  return {
+    rows: m.rows,
+    cols: m.cols,
+    data: m.data.map((row, i) => row.map((val, j) => func(val, i, j)))
+  };
 }
 
+// Function to multiply two matrices or a matrix and a scalar
 export function multiplyMatrix(a, b) {
   if (b instanceof Object) {
+    // Check if matrices are compatible for multiplication
     if (a.cols !== b.rows) {
-      throw Error("Columns of A must match rows of B");
+      throw Error("Columns of matrix A must match rows of matrix B");
     }
-    const newMatrix = createMatrix(a.rows, b.cols);
-    return mapMatrix(newMatrix, (_, i, j) => {
+    // Perform matrix multiplication
+    return createMatrix(a.rows, b.cols, (_, i, j) => {
       let sum = 0;
       for (let k = 0; k < a.cols; k += 1) {
         sum += a.data[i][k] * b.data[k][j];
@@ -39,57 +44,59 @@ export function multiplyMatrix(a, b) {
       return sum;
     });
   }
-  const newMatrix = createMatrix(a.rows, a.cols);
-  return mapMatrix(newMatrix, (_, i, j) => a.data[i][j] * b);
+  // Perform element-wise multiplication with a scalar
+  return mapMatrix(a, (val) => val * b);
 }
 
+// Function to add two matrices or a matrix and a scalar
 export function addMatrix(a, b) {
   if (b instanceof Object) {
+    // Check if matrices have the same dimensions for addition
     if (a.rows !== b.rows || a.cols !== b.cols) {
-      throw Error("Columns and Rows of A must match Columns and Rows of B");
+      throw Error(
+        "Columns and Rows of matrix A must match Columns and Rows of matrix B"
+      );
     }
-    const newMatrix = createMatrix(a.rows, b.cols);
-    return mapMatrix(newMatrix, (_, i, j) => a.data[i][j] + b.data[i][j]);
+    // Perform matrix addition
+    return createMatrix(
+      a.rows,
+      b.cols,
+      (_, i, j) => a.data[i][j] + b.data[i][j]
+    );
   }
-  const newMatrix = createMatrix(a.rows, a.cols);
-  return mapMatrix(newMatrix, (_, i, j) => a.data[i][j] + b);
+  // Perform element-wise addition with a scalar
+  return mapMatrix(a, (val) => val + b);
 }
 
+// Function to subtract two matrices or a matrix and a scalar
 export function subtractMatrix(a, b) {
   if (b instanceof Object) {
+    // Check if matrices have the same dimensions for subtraction
     if (a.rows !== b.rows || a.cols !== b.cols) {
       throw Error("Columns and Rows of A must match Columns and Rows of B");
     }
-    const newMatrix = createMatrix(a.rows, b.cols);
-    return mapMatrix(newMatrix, (_, i, j) => a.data[i][j] - b.data[i][j]);
+    // Perform matrix subtraction
+    return createMatrix(
+      a.rows,
+      b.cols,
+      (_, i, j) => a.data[i][j] - b.data[i][j]
+    );
   }
-  const newMatrix = createMatrix(a.rows, a.cols);
-  return mapMatrix(newMatrix, (_, i, j) => a.data[i][j] - b);
+  // Perform matrix subtraction with a scalar
+  return mapMatrix(a, (val) => val - b);
 }
 
-export function transposeMatrix(matrix) {
-  const newMatrix = createMatrix(matrix.cols, matrix.rows);
-  return mapMatrix(newMatrix, (_, i, j) => matrix.data[j][i]);
+// Returns transpose of given matrix
+export function transposeMatrix(m) {
+  return createMatrix(m.cols, m.rows, (_, i, j) => m.data[j][i]);
 }
 
-// Randomly sets matrix values
-export function randomizeMatrix(matrix) {
-  return mapMatrix(matrix, () => Math.random() * 2 - 1);
+// Converts matrix data to a 1D array
+export function matrixToArray(m) {
+  return m.data.flat();
 }
 
-// Returns matrix data as 1D array
-export function matrixToArray(matrix) {
-  const array = [];
-  for (let i = 0; i < matrix.rows; i += 1) {
-    for (let j = 0; j < matrix.cols; j += 1) {
-      array.push(matrix.data[i][j]);
-    }
-  }
-  return array;
-}
-
-// Generates matrix from 1D array
-export function arrayToMatrix(array) {
-  const newMatrix = createMatrix(array.length, 1);
-  return mapMatrix(newMatrix, (_, i) => array[i]);
+// Generates a matrix from a 1D array
+export function arrayToMatrix(arr) {
+  return createMatrix(arr.length, 1, (_, i) => arr[i]);
 }

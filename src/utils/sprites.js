@@ -3,10 +3,10 @@ import { CLOUD_TYPES } from "../constants/cloud";
 import { PIPE_TYPES } from "../constants/pipe";
 import spritesheet from "../assets/sprites/Spritesheet.png";
 
-export const spritesheetImage = new Image();
+const spritesheetImage = new Image();
 spritesheetImage.src = spritesheet;
 
-const cloudSprites = {
+export const cloudSprites = {
   [CLOUD_TYPES.SMALL]: {
     image: spritesheetImage,
     sx: 64,
@@ -30,7 +30,7 @@ const cloudSprites = {
   }
 };
 
-const pipeSprites = {
+export const pipeSprites = {
   [PIPE_TYPES.UPPER]: {
     image: spritesheetImage,
     sx: 32,
@@ -47,16 +47,16 @@ const pipeSprites = {
   }
 };
 
-const birdSprites = {
+export const birdSprites = {
   [BIRD_COLORS.GREEN]: {
-    [BIRD_WINGS.UPPER]: {
+    [BIRD_WINGS.UP]: {
       image: spritesheetImage,
       sx: 96,
       sy: 24,
       sWidth: 32,
       sHeight: 48
     },
-    [BIRD_WINGS.LOWER]: {
+    [BIRD_WINGS.DOWN]: {
       image: spritesheetImage,
       sx: 96,
       sy: 72,
@@ -65,14 +65,14 @@ const birdSprites = {
     }
   },
   [BIRD_COLORS.RED]: {
-    [BIRD_WINGS.UPPER]: {
+    [BIRD_WINGS.UP]: {
       image: spritesheetImage,
       sx: 64,
       sy: 24,
       sWidth: 32,
       sHeight: 48
     },
-    [BIRD_WINGS.LOWER]: {
+    [BIRD_WINGS.DOWN]: {
       image: spritesheetImage,
       sx: 64,
       sy: 72,
@@ -81,5 +81,3 @@ const birdSprites = {
     }
   }
 };
-
-export { cloudSprites, pipeSprites, birdSprites };

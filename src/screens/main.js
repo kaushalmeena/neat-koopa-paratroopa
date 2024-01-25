@@ -1,7 +1,7 @@
 import {
   CANVAS_HEIGHT,
   CANVAS_WIDTH,
-  EXIT_X_POSITION,
+  EXIT_X_POS,
   MODES,
   SCREENS
 } from "../constants/app";
@@ -36,7 +36,7 @@ function drawClouds() {
       drawCloud(state.current.clouds[i]);
       updateCloud(state.current.clouds[i]);
       // Mark cloud inactive, if it is not visible
-      if (state.current.clouds[i].x < EXIT_X_POSITION) {
+      if (state.current.clouds[i].x < EXIT_X_POS) {
         state.current.clouds[i].active = false;
       }
     }
@@ -52,19 +52,19 @@ function drawClouds() {
 
 function drawPipes() {
   let activeCount = 0;
-  let farthestPositionX = 0;
+  let farthestPosX = 0;
   for (let i = 0; i < state.current.pipes.length; i += 1) {
     // If cloud is active then only perform operations on it
     if (state.current.pipes[i].active) {
       // Increase activeCount
       activeCount += 1;
-      // Update farthestPositionX
-      farthestPositionX = Math.max(farthestPositionX, state.current.pipes[i].x);
+      // Update farthestPosX
+      farthestPosX = Math.max(farthestPosX, state.current.pipes[i].x);
       // Draw and update x position of pipe
       drawPipe(state.current.pipes[i]);
       updatePipe(state.current.pipes[i]);
       // Mark pipe inactive, if it is not visible
-      if (state.current.pipes[i].x < EXIT_X_POSITION) {
+      if (state.current.pipes[i].x < EXIT_X_POS) {
         state.current.pipes[i].active = false;
         state.current.score += 1;
       }
@@ -74,10 +74,9 @@ function drawPipes() {
     // Check if any inactive pipe available
     const pipeIndex = state.current.pipes.findIndex((pipe) => !pipe.active);
     if (pipeIndex > -1) {
-      const newPositionX =
-        farthestPositionX +
-        getRandomInteger(PIPE_MIN_DISTANCE, PIPE_MAX_DISTANCE);
-      makePipeActive(state.current.pipes[pipeIndex], newPositionX);
+      const newPosX =
+        farthestPosX + getRandomInteger(PIPE_MIN_DISTANCE, PIPE_MAX_DISTANCE);
+      makePipeActive(state.current.pipes[pipeIndex], newPosX);
     }
   }
 }
