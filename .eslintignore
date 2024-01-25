@@ -1,9 +1,0 @@
-# dependencies
-node_modules/
-
-# dist
-dist/
-
-# webpack
-webpack.dev.js
-webpack.prod.js
