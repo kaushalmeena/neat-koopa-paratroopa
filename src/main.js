@@ -14,7 +14,7 @@ import { performAction } from "./utils/app";
 import { canvas } from "./utils/canvas";
 import { isPointInside } from "./utils/helper";
 
-import "./index.css";
+import "./style.css";
 
 function setup() {
   // Set canvas height and width;
@@ -126,7 +126,7 @@ function start() {
       alert("Couldn't load font!");
     })
     .finally(() => {
-      document.querySelector("#loaderContainer").remove();
+      document.querySelector(".loader-container").remove();
     });
 }
 

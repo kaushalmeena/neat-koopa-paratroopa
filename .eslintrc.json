@@ -3,8 +3,6 @@
     "browser": true
   },
   "extends": ["airbnb-base", "plugin:prettier/recommended"],
-  "settings": {},
-  "plugins": [],
   "rules": {
     "no-alert": "off",
     "no-param-reassign": "off",

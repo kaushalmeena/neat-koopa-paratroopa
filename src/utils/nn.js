@@ -120,22 +120,25 @@ export function train(neuralNetwork, inputArray, targetArray) {
   outputMatrix = mapMatrix(outputMatrix, sigmoidFunc);
   // Convert array to matrix object
   const targetMatrix = arrayToMatrix(targetArray);
-  // Calculate the error
-  const outputErrors = subtractMatrix(targetMatrix, outputMatrix);
-  // Calculate gradient
-  let gradients = mapMatrix(outputMatrix, sigmoidDerivativeFunc);
-  gradients = multiplyMatrix(gradients, outputErrors);
-  gradients = multiplyMatrix(gradients, LEARNING_RATE);
+  // Calculate output layer error
+  const outputError = subtractMatrix(targetMatrix, outputMatrix);
+  // Calculate output gradient
+  let outputGradient = mapMatrix(outputMatrix, sigmoidDerivativeFunc);
+  outputGradient = multiplyMatrix(outputGradient, outputError);
+  outputGradient = multiplyMatrix(outputGradient, LEARNING_RATE);
   // Calculate deltas
   const hiddenMatrixTransposed = transposeMatrix(hiddenMatrix);
-  const weightsHODeltas = multiplyMatrix(gradients, hiddenMatrixTransposed);
+  const weightsHODeltas = multiplyMatrix(
+    outputGradient,
+    hiddenMatrixTransposed
+  );
   // Adjust the weights by deltas
   neuralNetwork.weightsHO = addMatrix(neuralNetwork.weightsHO, weightsHODeltas);
   // Adjust the bias by its deltas (which is just the gradients)
-  neuralNetwork.biasO = addMatrix(neuralNetwork.biasO, gradients);
+  neuralNetwork.biasO = addMatrix(neuralNetwork.biasO, outputGradient);
   // Calculate the hidden layer errors
   const weightsHOTransposed = transposeMatrix(neuralNetwork.weightsHO);
-  const hiddenErrors = multiplyMatrix(weightsHOTransposed, outputErrors);
+  const hiddenErrors = multiplyMatrix(weightsHOTransposed, outputError);
   // Calculate hidden gradient
   let hiddenGradient = mapMatrix(hiddenMatrix, sigmoidDerivativeFunc);
   hiddenGradient = multiplyMatrix(hiddenGradient, hiddenErrors);

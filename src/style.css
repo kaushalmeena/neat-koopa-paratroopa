@@ -25,7 +25,7 @@ body {
   transform: translate(-50%, -50%);
 }
 
-#loaderContainer {
+.loader-container {
   position: absolute;
   top: 50%;
   left: 50%;
