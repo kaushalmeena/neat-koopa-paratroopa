@@ -1,1 +1,3 @@
-export default {};
+export default {
+  base: "/neat-koopa-paratroopa/"
+};
