@@ -22,22 +22,22 @@ To set up everything in your local machine, you need to follow these steps:
 1. Clone this repo and then change directory to the `neat-koopa-paratroopa` folder:
 
 ```bash
-$ git clone https://github.com/kaushalmeena/neat-koopa-paratroopa.git
-$ cd neat-koopa-paratroopa
+git clone https://github.com/kaushalmeena/neat-koopa-paratroopa.git
+cd neat-koopa-paratroopa
 ```
 
 2. Install project dependencies using npm:
 
 ```bash
-$ npm install
+npm install
 ```
 
-### Runnning
+### Running
 
 To run the project simply run:
 
 ```bash
-$ npm run dev
+npm run dev
 ```
 
 Your app should now be running on [localhost:3000](http://localhost:3000/).
